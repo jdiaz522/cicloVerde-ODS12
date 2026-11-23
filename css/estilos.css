@@ -1,0 +1,349 @@
+/* =========================================================
+   CicloVerde · ODS 12 · Hoja de estilos compartida
+   Paleta tomada de nuestras ilustraciones y del logotipo:
+   crema #fbf6ec · crema oscuro #f2e8d5 · verde oscuro #1d4a37
+   verde #3a7a52 · mostaza #c8902a · terracota #a3462a
+   ========================================================= */
+
+/* PASO 1. El ancho incluye padding y borde: facilita calcular tamaños. */
+* { box-sizing: border-box; }
+
+/* PASO 2. Estilos generales que heredan los textos. */
+body { margin: 0; font-family: "Segoe UI", Arial, sans-serif; color: #23392e; background: #fbf6ec; line-height: 1.65; }
+h1, h2, h3 { line-height: 1.2; font-family: "Trebuchet MS", "Segoe UI", Arial, sans-serif; color: #1d4a37; }
+h1 { font-size: 2.7rem; margin: 0 0 1rem; }
+h2 { font-size: 2rem; margin-top: 0; }
+h3 { font-size: 1.2rem; }
+a { color: #2f6b47; text-underline-offset: 4px; }
+/* El foco visible permite recorrer la web con el teclado. No eliminar. */
+a:focus-visible, button:focus-visible, summary:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 3px solid #a3462a; outline-offset: 4px; }
+
+/* PASO 3. Nunca estirar una imagen más allá de su contenedor. */
+img, video { max-width: 100%; height: auto; display: block; }
+.contenedor { width: 92%; max-width: 1120px; margin: 0 auto; }
+.seccion { padding: 3.5rem 0; }
+.fondo { background: #f2e8d5; }
+.etiqueta { font-weight: bold; color: #a3462a; font-size: .9rem; text-transform: uppercase; letter-spacing: .08em; }
+.nota { font-size: .9rem; color: #4a5a50; }
+
+/* PASO 4. Flexbox alinea la marca y la navegación. wrap evita desbordamientos. */
+.cabecera { background: #fffdf8; border-bottom: 1px solid #e3d5bb; }
+.barra { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; padding: .9rem 0; }
+.marca { display: flex; align-items: center; gap: .6rem; text-decoration: none; font-family: "Trebuchet MS", Arial, sans-serif; font-size: 1.45rem; font-weight: bold; color: #1d4a37; }
+/* "Ciclo" en mostaza y "Verde" en verde, igual que el logotipo. */
+.marca .ciclo { color: #a8761c; }
+.menu { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem; list-style: none; margin: 0; padding: 0; }
+.menu a, .desplegable summary { display: block; padding: .65rem .8rem; color: #23392e; cursor: pointer; }
+.menu a { text-decoration: none; }
+.menu a:hover, .desplegable summary:hover { background: #e7f0e2; border-radius: .4rem; }
+
+/* El menú acompaña al usuario al bajar por la página.
+   sticky conserva su espacio: no hace falta compensar con padding en body.
+   top: 0 lo mantiene pegado arriba; z-index evita que las fotos lo tapen. */
+.cabecera { position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 18px #1d4a3712; }
+/* Dejar espacio al navegar con #id para que el header no tape el título. */
+section[id], main[id], footer[id], article[id] { scroll-margin-top: 130px; }
+
+/* PASO 5. Menú desplegable vertical. Solo details controla su apertura (sin JS). */
+.desplegable { position: relative; }
+.desplegable summary { list-style: revert; font-weight: bold; color: #1d4a37; }
+.desplegable[open] summary { background: #e7f0e2; border-radius: .4rem; }
+.submenu { position: absolute; top: 100%; left: 0; width: 240px; padding: .5rem; margin: .3rem 0 0; list-style: none; background: #fffdf8; border: 1px solid #c9d8c4; border-radius: .5rem; box-shadow: 0 8px 20px #1d4a3722; z-index: 10; }
+
+/* SEMANA 11 · MENÚ ACME CON JAVASCRIPT
+   El botón hamburguesa existe en el HTML, pero en escritorio se oculta. */
+.hamburguesa { display: none; align-items: center; gap: .6rem; min-height: 44px; padding: .5rem .85rem; border: 1px solid #1d4a37; border-radius: .45rem; background: #1d4a37; color: #fffdf8; font: inherit; font-weight: bold; cursor: pointer; }
+.hamburguesa:hover { background: #2f6b47; }
+/* Las tres líneas del icono se dibujan con spans. */
+.lineas { display: grid; gap: 4px; width: 22px; }
+.lineas span { display: block; height: 2px; border-radius: 2px; background: #fffdf8; }
+/* menu.js cambia hidden: oculto significa que sus enlaces tampoco reciben Tab. */
+[hidden] { display: none !important; }
+/* Las secciones reciben foco desde el menú; no se dibuja un marco alrededor de toda la sección. */
+section[tabindex="-1"]:focus { outline: none; }
+
+/* PASO 6. Dos columnas iguales: imagen y texto. minmax evita desborde. */
+.dos-columnas { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2.5rem; align-items: center; }
+.dos-columnas > * { min-width: 0; }
+.hero { padding-top: 4rem; padding-bottom: 4rem; }
+.foto { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; border-radius: 1.6rem; }
+/* El logotipo se muestra completo (contain) en lugar de recortarse. */
+.logo-grande { width: 100%; max-width: 380px; margin: 0 auto; aspect-ratio: 1 / 1; object-fit: contain; }
+
+/* PASO 7. Enlaces y botones con apariencia consistente. */
+.boton { display: inline-block; padding: .8rem 1.1rem; background: #1d4a37; color: white; border: 0; border-radius: .45rem; font: inherit; font-weight: bold; text-decoration: none; cursor: pointer; }
+.boton:hover { background: #2f6b47; }
+.enlace { display: inline-block; margin: .8rem; }
+
+/* PASO 8. Tres tarjetas de servicios en escritorio. */
+.tarjetas { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+.tarjeta { padding: 1.5rem; border: 1px solid #e3d5bb; border-radius: .9rem; background: #fffdf8; }
+.tarjeta h3 { margin-top: .4rem; }
+.numero { color: #a3462a; font-weight: bold; }
+/* Tarjetas apiladas una debajo de otra con separación uniforme. */
+.pila { display: grid; gap: 1rem; }
+.galeria { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+figure { margin: 0; }
+.galeria img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; border-radius: .8rem; }
+figcaption { padding-top: .5rem; }
+.video-local { width: 100%; max-width: 760px; aspect-ratio: 16 / 9; border-radius: .8rem; background: #1d4a37; }
+blockquote { margin: 0 0 1rem; font-size: 1.3rem; font-style: italic; max-width: 780px; }
+blockquote footer { font-size: 1rem; font-style: normal; font-weight: bold; color: #a3462a; }
+
+/* PASO 9. HU-01 · BUSCADOR "RECICLA FÁCIL" (wireframes 1, 2 y 3 de Figma).
+   No usa JavaScript: el estado del campo de búsqueda decide qué bloque se ve.
+   .busqueda:has(...) significa "si .busqueda contiene un campo en ese estado". */
+legend { font-weight: bold; padding: 0 .5rem; }
+.centrado { text-align: center; }
+.titulo-grande { text-align: center; font-size: clamp(2rem, 4.5vw, 3rem); margin-bottom: .5rem; }
+.subtitulo { text-align: center; margin-top: 0; }
+.busqueda { max-width: 640px; margin: 2rem auto 0; }
+.campo { position: relative; }
+/* Lupa dentro del campo: position absolute dentro de .campo (relative). */
+.campo .lupa { position: absolute; left: 1.1rem; top: 50%; width: 1.3rem; height: 1.3rem; transform: translateY(-50%); }
+.lupa, .flecha { fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+#buscador { width: 100%; font: inherit; font-size: 1.1rem; padding: 1rem 1rem 1rem 3.2rem; border: 2px solid #1d4a37; border-radius: .9rem; background: #fffdf8; color: #23392e; box-shadow: 0 6px 18px #1d4a3712; }
+/* Mientras el texto no coincide se marca el borde con mostaza (no con rojo: aún escribe). */
+#buscador:invalid { border-color: #c8902a; }
+.visualmente-oculto { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.codigo { color: #5b6b61; font-size: .9em; font-weight: normal; }
+
+/* Primero se ocultan los bloques que dependen del texto escrito. */
+.ejemplos, .sugerencias, .estado-invalido { display: none; }
+/* Campo vacío (:placeholder-shown) → ejemplos de búsqueda (wireframe 1). */
+.busqueda:has(#buscador:placeholder-shown) .ejemplos { display: flex; }
+.ejemplos { flex-wrap: wrap; align-items: center; justify-content: center; gap: .5rem; margin-top: .8rem; font-size: .95rem; }
+.ejemplo { padding: .3rem .8rem; border: 1px solid #c9d8c4; border-radius: 2rem; background: #fffdf8; text-decoration: none; }
+.ejemplo:hover { background: #e7f0e2; }
+
+/* ESCENARIO 1 · CA-01: el texto contiene una palabra conocida (:valid) → sugerencias.
+   Las palabras conocidas tienen 3 letras como mínimo, así que aparecen desde el 3.er carácter.
+   El cambio es inmediato (CSS no espera), dentro de los 500 ms del criterio. */
+.busqueda:has(#buscador:valid:not(:placeholder-shown)) .sugerencias { display: block; }
+.sugerencias { margin-top: .5rem; padding: .5rem; background: #fffdf8; border: 1px solid #e3d5bb; border-radius: .9rem; box-shadow: 0 10px 24px #1d4a371a; }
+.sugerencias-cabecera { display: flex; justify-content: space-between; align-items: center; gap: .5rem; padding: .4rem .8rem .6rem; border-bottom: 1px solid #eee3cf; font-size: .75rem; text-transform: uppercase; letter-spacing: .04em; color: #5b6b61; }
+.insignia { background: #f2e8d5; border-radius: .3rem; padding: .1rem .4rem; text-transform: none; white-space: nowrap; }
+.sugerencias ul, .aproximadas, .lista-materiales { list-style: none; margin: 0; padding: 0; }
+/* CA-02: nombre común en negrita y código entre paréntesis en gris. */
+.sugerencias li a { display: flex; align-items: center; gap: .7rem; padding: .7rem .8rem; border-radius: .5rem; color: #23392e; text-decoration: none; }
+.sugerencias li a:hover, .sugerencias li a:focus-visible { background: #e7f0e2; }
+.texto-sug { min-width: 0; }
+.sugerencias .lupa { width: 1rem; height: 1rem; color: #5b6b61; }
+.sugerencias .flecha { width: 1rem; height: 1rem; margin-left: auto; color: #5b6b61; }
+.ver-todos { display: block; padding: .6rem .8rem .3rem; font-size: .9rem; }
+
+/* ESCENARIO 2 · el texto no contiene ninguna palabra conocida (:invalid).
+   Los dos mensajes ocupan la misma celda de la grilla (grid-area 1 / 1). */
+.busqueda:has(#buscador:invalid) .estado-invalido { display: grid; }
+.estado-invalido > * { grid-area: 1 / 1; }
+/* Durante el primer segundo se ve "Sigue escribiendo…" (cubre la 1.ª y 2.ª letra)... */
+.sigue-escribiendo { margin: .6rem 0 0; text-align: center; font-size: .95rem; animation: ocultar .2s ease 1s forwards; }
+/* ...y si después de 1 s sigue sin coincidir, aparece "No encontramos ese material". */
+.sin-coincidencias { margin-top: .5rem; padding: 1.2rem 1.4rem; background: #fffdf8; border: 1px solid #e3d5bb; border-left: 6px solid #c8902a; border-radius: .9rem; animation: mostrar .3s ease 1s backwards; }
+.sin-coincidencias h3 { margin: 0 0 .3rem; }
+.sin-coincidencias p { margin: 0 0 .3rem; }
+.aproximadas li { margin: .2rem 0; }
+.alternativas { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 1rem; }
+.boton-secundario { background: transparent; color: #1d4a37; border: 2px solid #1d4a37; }
+.boton-secundario:hover { background: #e7f0e2; }
+@keyframes ocultar { to { opacity: 0; visibility: hidden; } }
+@keyframes mostrar { from { opacity: 0; visibility: hidden; } to { opacity: 1; visibility: visible; } }
+
+/* RESULTADO · :target es el elemento cuyo id coincide con el #... de la URL.
+   Todos los materiales están ocultos; solo se ve el elegido (wireframe 3). */
+.resultados { margin-top: 2.5rem; }
+.resultado { display: none; }
+.resultado:target { display: block; }
+/* Si ya hay un material elegido, se oculta el mensaje inicial. */
+.resultados:has(.resultado:target) .resultado-vacio { display: none; }
+.resumen-material { text-align: center; padding: 1.8rem 1.5rem; background: #fffdf8; border: 1px solid #e3d5bb; border-radius: 1rem; }
+.resumen-material h3 { margin: .6rem 0 .2rem; font-size: 1.4rem; }
+.resumen-material .codigo { margin: 0 0 .6rem; }
+.resumen-material p:last-child { margin: 0; }
+.icono { width: 64px; height: 64px; padding: 10px; fill: none; stroke: #1d4a37; stroke-width: 2.2; stroke-linejoin: round; stroke-linecap: round; background: #e7f0e2; border-radius: 1rem; }
+.resultado-cuerpo { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 1.5rem; margin-top: 1.5rem; align-items: start; }
+.resultado-cuerpo h3 { margin-top: 0; }
+.punto { padding: 1.1rem 1.3rem; margin-bottom: .9rem; background: #fffdf8; border: 1px solid #e3d5bb; border-radius: .9rem; }
+.punto-cabecera { display: flex; justify-content: space-between; gap: 1rem; align-items: baseline; }
+.punto h4 { margin: 0; font-size: 1.1rem; color: #1d4a37; }
+.punto p { margin: .3rem 0; }
+.distancia { font-weight: bold; white-space: nowrap; }
+.num { display: inline-grid; place-items: center; width: 1.5rem; height: 1.5rem; margin-right: .5rem; border-radius: 50%; background: #1d4a37; color: white; font-size: .8rem; }
+/* "Ver ubicación" usa details: se abre sin cambiar la URL, así no se pierde el :target. */
+.ubicacion summary { display: inline-block; padding: .4rem .9rem; border: 2px solid #1d4a37; border-radius: .45rem; font-weight: bold; color: #1d4a37; cursor: pointer; list-style: none; }
+.ubicacion summary::-webkit-details-marker { display: none; }
+.ubicacion[open] summary { background: #1d4a37; color: white; }
+.ubicacion p { font-size: .92rem; }
+/* Mapa de baja fidelidad hecho con degradados (líneas de calles) y pines numerados. */
+.mapa { position: relative; min-height: 360px; display: grid; place-items: center; text-align: center; border-radius: 1rem; border: 1px solid #c9d8c4;
+  background: linear-gradient(115deg, transparent 47%, #fffdf8 47% 53%, transparent 53%), linear-gradient(20deg, transparent 60%, #fffdf8 60% 64%, transparent 64%),
+  repeating-linear-gradient(0deg, #dfe8d8 0 2px, transparent 2px 46px), repeating-linear-gradient(90deg, #dfe8d8 0 2px, transparent 2px 46px), #eef3e9; }
+.mapa p { margin: 0; padding: .6rem 1rem; background: #fffdf8e6; border-radius: .6rem; font-weight: bold; color: #1d4a37; }
+.mapa small { font-weight: normal; color: #4a5a50; }
+.pin { position: absolute; display: grid; place-items: center; width: 2.2rem; height: 2.2rem; border-radius: 50%; border: 3px solid white; background: #a3462a; color: white; font-weight: bold; box-shadow: 0 4px 10px #0003; }
+.pin.p1 { top: 18%; left: 22%; } .pin.p2 { top: 30%; right: 18%; } .pin.p3 { bottom: 16%; left: 48%; }
+.acciones-resultado { text-align: center; margin-top: .5rem; }
+
+/* CATEGORÍAS · ruta alternativa del user flow. Las tarjetas son label de radios. */
+.titulo-subrayado::after { content: ""; display: block; width: 80px; height: 4px; margin-top: .6rem; background: #c8902a; border-radius: 2px; }
+.tarjetas-categoria { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; margin-top: 1.5rem; }
+.tarjeta-categoria { display: flex; flex-direction: column; align-items: center; gap: .5rem; padding: 1.8rem 1rem; background: #fffdf8; border: 1px solid #e3d5bb; border-radius: 1rem; cursor: pointer; text-align: center; }
+.tarjeta-categoria strong { font-size: 1.15rem; color: #1d4a37; }
+.tarjeta-categoria span { font-size: .9rem; color: #5b6b61; }
+.tarjeta-categoria:hover { border-color: #3a7a52; }
+/* Tarjeta elegida y tarjeta con foco de teclado. */
+#cat-plasticos:checked ~ .tarjetas-categoria [for="cat-plasticos"],
+#cat-vidrio:checked ~ .tarjetas-categoria [for="cat-vidrio"],
+#cat-papel:checked ~ .tarjetas-categoria [for="cat-papel"],
+#cat-metales:checked ~ .tarjetas-categoria [for="cat-metales"] { border: 2px solid #1d4a37; background: #e7f0e2; }
+#cat-plasticos:focus-visible ~ .tarjetas-categoria [for="cat-plasticos"],
+#cat-vidrio:focus-visible ~ .tarjetas-categoria [for="cat-vidrio"],
+#cat-papel:focus-visible ~ .tarjetas-categoria [for="cat-papel"],
+#cat-metales:focus-visible ~ .tarjetas-categoria [for="cat-metales"] { outline: 3px solid #a3462a; outline-offset: 3px; }
+.panel-categoria { display: none; margin-top: 1.5rem; padding: 1.5rem; background: #fffdf8; border: 1px solid #e3d5bb; border-radius: 1rem; }
+.panel-categoria h3 { margin-top: 0; }
+.panel-categoria h3 .nota { font-weight: normal; }
+#cat-plasticos:checked ~ .panel-categoria.plasticos,
+#cat-vidrio:checked ~ .panel-categoria.vidrio,
+#cat-papel:checked ~ .panel-categoria.papel,
+#cat-metales:checked ~ .panel-categoria.metales { display: block; }
+.categorias:has([name="categoria"]:checked) .categoria-vacia { display: none; }
+.lista-materiales { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: .5rem; margin-top: 1rem; }
+.lista-materiales a { display: block; height: 100%; padding: .6rem .8rem; border: 1px solid #e3d5bb; border-radius: .5rem; text-decoration: none; color: #23392e; }
+.lista-materiales a:hover { background: #e7f0e2; }
+/* CA-03 · Filtro de Plásticos (16 materiales): cada opción oculta los que no tienen su código. */
+.filtro { border: 0; padding: 0; margin: 0; min-width: 0; }
+.filtro legend { padding: 0; margin-bottom: .5rem; }
+.filtro > input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.filtro > label { display: inline-block; margin: .2rem .3rem .2rem 0; padding: .35rem .8rem; border: 1px solid #b9cdb3; border-radius: 2rem; cursor: pointer; font-size: .92rem; }
+.filtro > input:checked + label { background: #1d4a37; border-color: #1d4a37; color: white; }
+.filtro > input:focus-visible + label { outline: 3px solid #a3462a; outline-offset: 3px; }
+#fp-1:checked ~ .lista-materiales li:not(.r1),
+#fp-2:checked ~ .lista-materiales li:not(.r2),
+#fp-3:checked ~ .lista-materiales li:not(.r3),
+#fp-4:checked ~ .lista-materiales li:not(.r4),
+#fp-5:checked ~ .lista-materiales li:not(.r5),
+#fp-6:checked ~ .lista-materiales li:not(.r6),
+#fp-7:checked ~ .lista-materiales li:not(.r7) { display: none; }
+
+/* PASO 10. ANTES DE COMPRAR: lista con casillas y un resultado visible.
+   Grid: la casilla en la primera columna y su texto en la segunda. */
+.checklist { display: grid; grid-template-columns: auto 1fr; gap: .7rem .8rem; align-items: start; border: 1px solid #e3d5bb; border-radius: .8rem; padding: 1.5rem; min-width: 0; background: #fffdf8; counter-reset: marcadas; }
+.checklist > input { width: 1.3rem; height: 1.3rem; margin: .2rem 0 0; }
+.checklist > label { cursor: pointer; }
+.checklist > input:checked + label { color: #1d4a37; font-weight: bold; }
+/* Contador CSS: suma 1 por cada casilla marcada y lo muestra en .contador. */
+.checklist > input:checked { counter-increment: marcadas; }
+.contador::after { content: counter(marcadas) " de 3"; font-weight: bold; }
+.veredictos { grid-column: 1 / -1; margin-top: .5rem; }
+.veredicto { padding: 1rem 1.2rem; border-radius: .6rem; }
+.pendiente { background: #fbefd9; border-left: 6px solid #c8902a; }
+.listo { display: none; background: #e7f0e2; border-left: 6px solid #3a7a52; }
+/* Si las tres casillas están marcadas: se oculta "pendiente" y aparece "listo". */
+#c1:checked ~ #c2:checked ~ #c3:checked ~ .veredictos .pendiente { display: none; }
+#c1:checked ~ #c2:checked ~ #c3:checked ~ .veredictos .listo { display: block; }
+.veredicto h3 { margin: 0 0 .3rem; }
+.veredicto p { margin: 0 0 .5rem; }
+
+/* PASO 11. TALLER: cada campo del formulario ocupa una fila. */
+.formulario { display: grid; gap: .6rem; background: #fffdf8; border: 1px solid #e3d5bb; padding: 1.5rem; border-radius: .8rem; }
+.formulario > label { font-weight: bold; }
+input[type="text"], input[type="email"], select, textarea { width: 100%; min-width: 0; font: inherit; padding: .7rem; border: 1px solid #7d8f82; border-radius: .3rem; background: white; color: #23392e; }
+input[type="radio"], input[type="checkbox"] { accent-color: #1d4a37; }
+textarea { resize: vertical; }
+
+/* PASO 11b (SEMANA 11). HU-06 · CALCULADORA DE DESCARTABLES
+   Formulario a la izquierda y resultado a la derecha. El JS solo cambia
+   clases, atributos, textos y el ancho de las barras: el aspecto está aquí. */
+.calculadora { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; align-items: start; margin-top: 1.5rem; }
+.campos-calculadora { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; min-width: 0; margin: 0; padding: 0; border: 0; }
+.campos-calculadora legend { padding: 0; margin-bottom: .6rem; font-weight: bold; color: #1d4a37; }
+.campo-numero { display: grid; gap: .3rem; align-content: start; }
+.campo-numero label { font-weight: bold; }
+input[type="number"] { width: 100%; min-width: 0; font: inherit; padding: .7rem; border: 1px solid #7d8f82; border-radius: .3rem; background: white; color: #23392e; }
+input[type="number"]:focus-visible { outline: 3px solid #a3462a; outline-offset: 4px; }
+/* Estado de error que agrega el JS: borde terracota y mensaje debajo del campo. */
+input.campo-error { border: 2px solid #a3462a; background: #fdf1ec; }
+.mensaje-error { margin: 0; font-size: .85rem; font-weight: bold; color: #a3462a; }
+.acciones-calculadora { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: .4rem; }
+.resultado-calculadora { padding: 1.5rem; border: 1px solid #e3d5bb; border-radius: .8rem; background: #fffdf8; }
+.resultado-calculadora > .nota { margin: 0; }
+.totales { margin: 0 0 1rem; font-size: 1.1rem; }
+.totales strong { font-size: 1.8rem; color: #1d4a37; }
+/* Barras: el JS calcula el ancho de .barra-relleno (style.width) en porcentaje. */
+.barras { display: grid; gap: .7rem; margin: 0 0 1.2rem; padding: 0; list-style: none; }
+.barras li { display: grid; grid-template-columns: 6.5rem 1fr; gap: .1rem .8rem; align-items: center; }
+.barra-fondo { height: .9rem; overflow: hidden; border-radius: 1rem; background: #f2e8d5; }
+.barra-relleno { display: block; width: 0; height: 100%; border-radius: 1rem; background: #3a7a52; transition: width .4s ease; }
+.barra-valor { grid-column: 2; font-size: .85rem; color: #4a5a50; }
+/* Clase "mayor" que agrega el JS al descartable más usado. */
+.barras li.mayor .barra-nombre { font-weight: bold; color: #1d4a37; }
+.barras li.mayor .barra-relleno { background: #c8902a; }
+.felicitacion { background: #e7f0e2; border-left: 6px solid #3a7a52; }
+@media (prefers-reduced-motion: reduce) { .barra-relleno { transition: none; } }
+
+/* PASO 12. La proporción del video de YouTube se conserva a cualquier ancho. */
+.video { width: 100%; aspect-ratio: 16 / 9; border: 0; display: block; border-radius: .8rem; }
+.confirmacion { max-width: 760px; margin: 0 auto; }
+.confirmacion .icono-ok { width: 72px; height: 72px; }
+.pie { background: #1d4a37; color: white; padding: 2rem 0; }
+.pie a { color: white; }
+.redes { display: flex; flex-wrap: wrap; gap: 1.2rem; }
+.redes a { display: inline-flex; align-items: center; gap: .5rem; }
+.redes img { filter: invert(1); }
+.saltar { position: absolute; left: -9999px; }
+.saltar:focus { left: 1rem; top: 1rem; padding: 1rem; background: white; z-index: 200; }
+
+/* Detalles visuales: círculos suaves como en nuestras ilustraciones. */
+.hero { background: radial-gradient(circle at 88% 26%, #efe2c4 0 120px, transparent 121px), radial-gradient(circle at 4% 92%, #e1ead9 0 70px, transparent 71px); }
+.hero h1 { font-size: clamp(2.2rem, 4.6vw, 3.6rem); letter-spacing: -.02em; }
+.postal { background: #fffdf8; padding: .8rem; border: 1px solid #e3d5bb; border-radius: 1.8rem; box-shadow: 8px 10px 0 #d9e5d2; }
+.postal figcaption { padding: .6rem .5rem .2rem; font-style: italic; }
+.tarjeta:nth-child(2) { background: #f8f0dd; }
+
+/* PASO 13. TABLET: estas reglas se aplican a 900 px o menos. */
+@media (max-width: 900px) {
+  .barra { gap: .4rem; }
+  .tarjetas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .tarjetas-categoria { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .resultado-cuerpo { grid-template-columns: 1fr; }
+  .calculadora { grid-template-columns: 1fr; }
+  h1 { font-size: 2.2rem; }
+}
+
+/* PASO 14. CELULAR: cambiamos columnas por una sola columna. */
+@media (max-width: 600px) {
+  h1 { font-size: 1.9rem; }
+  h2 { font-size: 1.6rem; }
+  .dos-columnas, .tarjetas, .galeria { grid-template-columns: 1fr; }
+  .dos-columnas { gap: 1.5rem; }
+  .hero, .seccion { padding-top: 2.2rem; padding-bottom: 2.2rem; }
+  .barra { padding: .6rem 0; }
+  .barra { flex-wrap: nowrap; }
+  .marca { font-size: 1.2rem; }
+  .marca img { width: 30px; height: 30px; }
+  /* SEMANA 11 · Aparece la hamburguesa (el JS usa el mismo límite de 600 px). */
+  .hamburguesa { display: inline-flex; }
+  /* La navegación se vuelve un panel debajo del encabezado.
+     top: 100% se mide desde .cabecera, que es sticky (posicionada). */
+  .navegacion { position: absolute; top: 100%; left: 0; width: 100%; max-height: 75vh; overflow-y: auto; padding: .5rem 4%; background: #fffdf8; border-bottom: 1px solid #e3d5bb; box-shadow: 0 8px 20px #1d4a3722; }
+  /* Los enlaces se apilan uno debajo de otro, con área de toque de 44 px. */
+  .menu { flex-direction: column; align-items: stretch; gap: 0; }
+  .menu a, .desplegable summary { padding: .7rem .8rem; min-height: 44px; }
+  /* "Actuar" se abre dentro del panel, ocupando su lugar en la lista. */
+  .desplegable { position: static; }
+  .submenu { position: static; width: 100%; margin: 0 0 .3rem; box-shadow: none; background: #f4f8f1; }
+  .submenu a { padding: .7rem .8rem; }
+  /* El encabezado móvil ahora es más bajo: basta con menos espacio. */
+  section[id], main[id], footer[id], article[id] { scroll-margin-top: 90px; }
+  .enlace { margin-left: 0; }
+  .formulario, .checklist, .panel-categoria, .sin-coincidencias { padding: 1rem; }
+  .campos-calculadora { grid-template-columns: 1fr; }
+  .resultado-calculadora { padding: 1rem; }
+  .barras li { grid-template-columns: 5.5rem 1fr; }
+  .tarjetas-categoria { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .tarjeta-categoria { padding: 1.2rem .6rem; }
+  .mapa { min-height: 240px; }
+  .logo-grande { max-width: 240px; }
+  .hero { background: radial-gradient(circle at 100% 0%, #efe2c4 0 90px, transparent 91px); }
+}

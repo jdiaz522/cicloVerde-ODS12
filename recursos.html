@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <!-- PASO 1: permite que el navegador use el ancho real del celular. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Video y guía | CicloVerde - ODS 12</title>
+  <meta name="description" content="Video sobre el ODS 12 y guía para pasar de la información a una acción concreta con CicloVerde.">
+  <!-- PASO 2: conectar este HTML con el archivo CSS compartido. -->
+  <link rel="stylesheet" href="css/estilos.css">
+  <!-- SEMANA 11: menú responsive con JavaScript. defer espera a que el HTML esté listo. -->
+  <script src="js/menu.js" defer></script>
+  <!-- Este icono aparece en la pestaña del navegador. -->
+  <link rel="icon" type="image/svg+xml" href="iconos/favicon.svg">
+</head>
+<body>
+<a class="saltar" href="#contenido">Saltar al contenido</a>
+<!-- PASO 3: ENCABEZADO. Permanece visible con position: sticky en CSS. -->
+<header class="cabecera">
+  <div class="contenedor barra">
+    <a class="marca" href="index.html"><img src="iconos/favicon.svg" alt="" width="42" height="42"><span class="nombre"><span class="ciclo">Ciclo</span>Verde</span></a>
+    <!-- SEMANA 11 (menú ACME): botón hamburguesa. Solo se ve en 600 px o menos.
+         aria-controls lo une con la navegación; aria-expanded indica si está abierta. -->
+    <button id="boton-menu" class="hamburguesa" type="button"
+            aria-controls="navegacion" aria-expanded="false" aria-label="Abrir menú">
+      <span class="lineas" aria-hidden="true"><span></span><span></span><span></span></span>
+      <span id="texto-menu">Menú</span>
+    </button>
+    <!-- PASO 4: MENÚ HORIZONTAL. La lista se ordena en fila con Flexbox.
+         En celular, JS le agrega o quita el atributo hidden para mostrarla u ocultarla. -->
+    <nav id="navegacion" class="navegacion" aria-label="Navegación principal">
+      <ul class="menu">
+        <li><a href="index.html#inicio">Inicio</a></li>
+        <li><a href="index.html#nosotros">Nosotros</a></li>
+        <li>
+          <!-- MENÚ DESPLEGABLE VERTICAL: details se abre con clic, Enter o toque.
+               JS solo lo cierra (Escape o al cerrar el menú); por eso tiene id. -->
+          <details id="actuar" class="desplegable">
+            <summary>Actuar</summary>
+            <ul class="submenu">
+              <li><a href="index.html#buscar">Buscar material</a></li>
+              <li><a href="index.html#categorias">Explorar categorías</a></li>
+              <li><a href="index.html#servicios">Nuestros servicios</a></li>
+              <li><a href="index.html#antes-de-comprar">Antes de comprar</a></li>
+              <li><a href="index.html#calculadora">Calcular mis descartables</a></li>
+              <li><a href="index.html#taller">Inscribirme a un taller</a></li>
+            </ul>
+          </details>
+        </li>
+        <li><a href="index.html#proyectos">Proyectos</a></li>
+        <li><a href="index.html#galeria">Galería</a></li>
+        <li><a href="recursos.html">Video y guía</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="contenido" class="contenedor seccion">
+  <p class="etiqueta">Video y guía · ODS 12</p>
+  <h1>¿Qué puedo hacer yo por el consumo responsable?</h1>
+  <!-- PASO 9: VIDEO Y TEXTO en dos columnas. El video se inserta desde YouTube (no se descarga). -->
+  <section class="dos-columnas" aria-labelledby="video-titulo">
+    <div>
+      <iframe
+        class="video"
+        src="https://www.youtube.com/embed/V-3acAwVcM4"
+        title="ODS 12 Producción y consumo responsables: ¿Qué puedo hacer?"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+      <p class="nota">Video: «ODS 12 Producción y consumo responsables: ¿Qué puedo hacer?», Plataforma de ONG de Acción Social (2021), en YouTube. Es material de referencia sobre el ODS 12; no presenta a CicloVerde.</p>
+      <!-- Enlace alternativo por si el video no se reproduce dentro de la página. -->
+      <p><a href="https://www.youtube.com/watch?v=V-3acAwVcM4" target="_blank" rel="noopener noreferrer">Abrir el video en YouTube</a> si no se reproduce aquí.</p>
+    </div>
+    <div>
+      <h2 id="video-titulo">Del video a una acción concreta</h2>
+      <p>El ODS 12 busca garantizar modalidades de consumo y producción sostenibles. Entre sus metas están reducir a la mitad el desperdicio de alimentos (meta 12.3) y disminuir la generación de residuos mediante la prevención, la reducción, el reciclaje y la reutilización (meta 12.5).</p>
+      <p>En CicloVerde convertimos esas metas en tres pasos que puedes probar en nuestra web:</p>
+      <ol>
+        <li><a href="index.html#buscar">Busca tu material</a> con palabras cotidianas y descubre dónde reciclarlo.</li>
+        <li><a href="index.html#antes-de-comprar">Piensa antes de comprar</a> con nuestra lista de tres frases.</li>
+        <li><a href="index.html#taller">Inscríbete en un taller</a> para seguir aprendiendo.</li>
+      </ol>
+      <a class="boton" href="index.html#buscar">Probar el recorrido</a>
+      <p class="nota">Más información sobre el ODS 12: <a href="https://www.un.org/sustainabledevelopment/es/sustainable-consumption-production/" target="_blank" rel="noopener noreferrer">Naciones Unidas</a>.</p>
+    </div>
+  </section>
+</main>
+<!-- PIE DE PÁGINA compartido por las páginas del sitio. -->
+<footer id="contacto" class="pie">
+  <div class="contenedor">
+    <p><strong>CicloVerde</strong> · Consume menos, vive mejor</p>
+    <p>Correo: <a href="mailto:contacto@cicloverde.org">contacto@cicloverde.org</a> · Teléfono: 987 654 321</p>
+    <nav class="redes" aria-label="Redes sociales">
+      <!-- Son páginas generales de las redes; reemplazar por las cuentas del proyecto. -->
+      <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer"><img src="iconos/facebook.svg" alt="" width="24" height="24">Facebook</a>
+      <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer"><img src="iconos/instagram.svg" alt="" width="24" height="24">Instagram</a>
+      <a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer"><img src="iconos/youtube.svg" alt="" width="24" height="24">YouTube</a>
+    </nav>
+    <p>© 2026 CicloVerde · Proyecto académico · <a href="FUENTES.txt">Créditos de recursos</a></p>
+  </div>
+</footer>
+</body>
+</html>

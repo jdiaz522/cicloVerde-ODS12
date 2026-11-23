@@ -1,0 +1,1369 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <!-- PASO 1: permite que el navegador use el ancho real del celular. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inicio | CicloVerde - ODS 12</title>
+  <meta name="description" content="CicloVerde promueve la producción y el consumo responsables (ODS 12): separa tus residuos, piensa antes de comprar e inscríbete en un taller.">
+  <!-- PASO 2: conectar este HTML con el archivo CSS compartido. -->
+  <link rel="stylesheet" href="css/estilos.css">
+  <!-- SEMANA 11: menú responsive con JavaScript. defer espera a que el HTML esté listo. -->
+  <script src="js/menu.js" defer></script>
+  <!-- SEMANA 11 · HU-06: calculadora de descartables (solo en esta página). -->
+  <script src="js/calculadora.js" defer></script>
+  <!-- Este icono aparece en la pestaña del navegador. -->
+  <link rel="icon" type="image/svg+xml" href="iconos/favicon.svg">
+</head>
+<body>
+<a class="saltar" href="#contenido">Saltar al contenido</a>
+<!-- PASO 3: ENCABEZADO. Permanece visible con position: sticky en CSS. -->
+<header class="cabecera">
+  <div class="contenedor barra">
+    <a class="marca" href="index.html"><img src="iconos/favicon.svg" alt="" width="42" height="42"><span class="nombre"><span class="ciclo">Ciclo</span>Verde</span></a>
+    <!-- SEMANA 11 (menú ACME): botón hamburguesa. Solo se ve en 600 px o menos.
+         aria-controls lo une con la navegación; aria-expanded indica si está abierta. -->
+    <button id="boton-menu" class="hamburguesa" type="button"
+            aria-controls="navegacion" aria-expanded="false" aria-label="Abrir menú">
+      <span class="lineas" aria-hidden="true"><span></span><span></span><span></span></span>
+      <span id="texto-menu">Menú</span>
+    </button>
+    <!-- PASO 4: MENÚ HORIZONTAL. La lista se ordena en fila con Flexbox.
+         En celular, JS le agrega o quita el atributo hidden para mostrarla u ocultarla. -->
+    <nav id="navegacion" class="navegacion" aria-label="Navegación principal">
+      <ul class="menu">
+        <li><a href="index.html#inicio">Inicio</a></li>
+        <li><a href="index.html#nosotros">Nosotros</a></li>
+        <li>
+          <!-- MENÚ DESPLEGABLE VERTICAL: details se abre con clic, Enter o toque.
+               JS solo lo cierra (Escape o al cerrar el menú); por eso tiene id. -->
+          <details id="actuar" class="desplegable">
+            <summary>Actuar</summary>
+            <ul class="submenu">
+              <li><a href="index.html#buscar">Buscar material</a></li>
+              <li><a href="index.html#categorias">Explorar categorías</a></li>
+              <li><a href="index.html#servicios">Nuestros servicios</a></li>
+              <li><a href="index.html#antes-de-comprar">Antes de comprar</a></li>
+              <li><a href="index.html#calculadora">Calcular mis descartables</a></li>
+              <li><a href="index.html#taller">Inscribirme a un taller</a></li>
+            </ul>
+          </details>
+        </li>
+        <li><a href="index.html#proyectos">Proyectos</a></li>
+        <li><a href="index.html#galeria">Galería</a></li>
+        <li><a href="recursos.html">Video y guía</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="contenido">
+  <!-- SEMANA 11: tabindex="-1" deja que menu.js lleve el foco a la sección elegida en el menú
+       (sin agregarla al recorrido con Tab). -->
+  <!-- PASO 5: PRESENTACIÓN. Bloque de imagen y texto en dos columnas. -->
+  <section id="inicio" tabindex="-1" class="hero contenedor dos-columnas" aria-labelledby="titulo">
+    <div>
+      <p class="etiqueta">ODS 12 · Producción y consumo responsables</p>
+      <h1 id="titulo">Consume menos,<br>vive mejor.</h1>
+      <p>Muchas personas quieren reciclar, pero no conocen el nombre técnico ni el código de sus envases, y no saben dónde llevarlos. Con <strong>Recicla Fácil</strong>, el buscador de CicloVerde, escribes palabras cotidianas y encuentras dónde reciclar.</p>
+      <a class="boton" href="#buscar">Buscar un material</a>
+      <a class="enlace" href="#categorias">Explorar por tipo de residuo</a>
+      <p class="nota">Proyecto académico: las acciones de esta web son simulaciones hechas con HTML, CSS y JavaScript.</p>
+    </div>
+    <figure class="postal">
+      <img class="foto" src="imagenes/nosotros.jpg" alt="Ilustración de vecinos reunidos junto a un letrero que dice Consume menos, vive mejor" width="1200" height="800">
+      <figcaption>Reducir, reutilizar y reciclar empieza en casa.</figcaption>
+    </figure>
+  </section>
+
+  <!-- ============================================================
+       HU-01 · BÚSQUEDA ASISTIDA DE MATERIALES RECICLABLES (Recicla Fácil)
+       Basada en los wireframes 1, 2 y 3 de Figma y en el user flow.
+       Funciona solo con HTML y CSS:
+       - pattern + :valid/:invalid detecta si el texto contiene una palabra conocida.
+       - :placeholder-shown detecta el campo vacío.
+       - :target muestra el material elegido; :checked, la categoría y el filtro.
+       ============================================================ -->
+  <section id="buscar" tabindex="-1" class="seccion fondo buscador-hu" aria-labelledby="titulo-buscar">
+    <div class="contenedor">
+      <p class="etiqueta centrado">HU-01 · Recicla Fácil</p>
+      <h2 id="titulo-buscar" class="titulo-grande">Encuentra dónde reciclar</h2>
+      <p class="subtitulo">Busca tu material usando palabras cotidianas.</p>
+
+      <div class="busqueda">
+        <div class="campo">
+          <svg class="lupa" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg>
+          <label for="buscador" class="visualmente-oculto">¿Qué quieres reciclar?</label>
+          <!-- pattern: el texto debe contener una palabra conocida (botella, lata, caja...).
+               Las letras van entre corchetes para aceptar mayúsculas y tildes. -->
+          <input id="buscador" type="search" placeholder="¿Qué quieres reciclar?" autocomplete="off" spellcheck="false"
+            aria-describedby="ayuda-buscar"
+            pattern=".*([bB][oOóÓ][tT]|[bB][oOóÓ][lL]|[lL][aAáÁ][tT]|[eEéÉ][nN][vV]|[eEéÉ][mM][bB]|[yY][oOóÓ][gG]|[vV][iIíÍ][dD]|[fF][rR][aAáÁ]|[cC][aAáÁ][jJ]|[cC][aAáÁ][rR]|[pP][aAáÁ][pP]|[pP][eEéÉ][rR]|[hH][oOóÓ][jJ]|[tT][aAáÁ][pP]|[pP][eEéÉ][tT]|[pP][vV][cC]|[tT][uUúÚüÜ][bB]|[aAáÁ][lL][uUúÚüÜ]|[tT][eEéÉ][tT]|[lL][eEéÉ][cC]|[pP][lL][aAáÁ]|[mM][eEéÉ][tT]|[aAáÁ][cC][eEéÉ]|[bB][eEéÉ][bB]|[aAáÁ][gG][uUúÚüÜ]|[gG][aAáÁ][sS]|[dD][eEéÉ][tT]|[sS][hH][aAáÁ]|[fF][iIíÍ][lL]|[vV][aAáÁ][sS]|[tT][eEéÉ][cC]|[bB][aAáÁ][nN]|[cC][uUúÚüÜ][bB]|[sS][nN][aAáÁ]|[cC][eEéÉ][rR]|[vV][iIíÍ][nN]|[mM][eEéÉ][rR]|[aAáÁ][tT][uUúÚüÜ]|[hH][dD][pP]|[lL][dD][pP]|[cC][uUúÚüÜ][cC]|[tT][eEéÉ][nN]).*">
+        </div>
+        <p id="ayuda-buscar" class="nota centrado">Las sugerencias aparecen desde el tercer carácter.</p>
+
+        <!-- Campo vacío: ejemplos (wireframe 1). -->
+        <div class="ejemplos">
+          <span>Ejemplos:</span>
+          <a class="ejemplo" href="#m-botella-agua">Botella de agua</a>
+          <a class="ejemplo" href="#m-lata-gaseosa">Lata de gaseosa</a>
+          <a class="ejemplo" href="#m-envase-yogurt">Envase de yogurt</a>
+          <a class="ejemplo" href="#m-bolsa-plastico">Bolsa plástica</a>
+        </div>
+
+        <!-- ESCENARIO 1 · Texto con una palabra conocida: sugerencias (wireframe 2). CA-01 y CA-02 -->
+        <div class="sugerencias">
+          <div class="sugerencias-cabecera"><span>Sugerencias activas (mínimo 3 caracteres)</span><span class="insignia">3+ car.</span></div>
+          <ul>
+            <li><a href="#m-botella-agua"><svg class="lupa" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg><span class="texto-sug"><strong>Botella de agua</strong> <span class="codigo">(#1 PET Bottles)</span></span><svg class="flecha" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></a></li>
+            <li><a href="#m-botella-aceite"><svg class="lupa" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg><span class="texto-sug"><strong>Botella de aceite</strong> <span class="codigo">(#1 PET Bottles)</span></span><svg class="flecha" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></a></li>
+            <li><a href="#m-botella-bebida"><svg class="lupa" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg><span class="texto-sug"><strong>Botella de bebida</strong> <span class="codigo">(#1 PET Bottles)</span></span><svg class="flecha" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></a></li>
+            <li><a href="#m-botella-vidrio"><svg class="lupa" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg><span class="texto-sug"><strong>Botella de vidrio</strong> <span class="codigo">(#70 Glass)</span></span><svg class="flecha" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></a></li>
+            <li><a href="#m-bolsa-plastico"><svg class="lupa" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg><span class="texto-sug"><strong>Bolsa de plástico</strong> <span class="codigo">(#4 LDPE)</span></span><svg class="flecha" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></a></li>
+            <li><a href="#m-lata-gaseosa"><svg class="lupa" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg><span class="texto-sug"><strong>Lata de gaseosa</strong> <span class="codigo">(#41 ALU)</span></span><svg class="flecha" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></a></li>
+            <li><a href="#m-envase-yogurt"><svg class="lupa" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg><span class="texto-sug"><strong>Envase de yogurt</strong> <span class="codigo">(#5 PP)</span></span><svg class="flecha" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></a></li>
+            <li><a href="#m-caja-carton"><svg class="lupa" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg><span class="texto-sug"><strong>Caja de cartón</strong> <span class="codigo">(#20 PAP)</span></span><svg class="flecha" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></a></li>
+          </ul>
+          <a class="ver-todos" href="#categorias">¿No está tu material? Explora por tipo de residuo</a>
+        </div>
+
+        <!-- ESCENARIO 2 · Texto sin palabra conocida. Primero se pide seguir escribiendo;
+             si después de 1 segundo sigue sin coincidir, aparece el mensaje (animation-delay). -->
+        <div class="estado-invalido">
+          <p class="sigue-escribiendo">Sigue escribiendo… las sugerencias aparecen desde el tercer carácter.</p>
+          <div class="sin-coincidencias" role="status">
+            <h3>No encontramos ese material</h3>
+            <p>Quizás buscabas:</p>
+            <ul class="aproximadas">
+              <li><a href="#m-botella-agua">Botella de agua <span class="codigo">(#1 PET Bottles)</span></a></li>
+              <li><a href="#m-lata-gaseosa">Lata de gaseosa <span class="codigo">(#41 ALU)</span></a></li>
+              <li><a href="#m-caja-carton">Caja de cartón <span class="codigo">(#20 PAP)</span></a></li>
+            </ul>
+            <div class="alternativas">
+              <a class="boton" href="#categorias">Explorar categorías por tipo de residuo</a>
+              <a class="boton boton-secundario" href="tel:+18002532687">Llamar a la línea 1-800-CLEANUP</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RESULTADO: cada material es un article con id. Al elegir una sugerencia,
+           el enlace #m-... lo convierte en :target y se muestra (wireframe 3). -->
+      <div class="resultados" aria-live="polite">
+        <p class="resultado-vacio nota centrado">Elige una sugerencia o un material de las categorías para ver sus puntos de reciclaje.</p>
+        <article id="m-botella-agua" class="resultado" aria-labelledby="t-botella-agua">
+          <div class="resumen-material">
+            <svg class="icono" viewBox="0 0 48 48" aria-hidden="true"><path d="M20 4h8v5l4 7v25a3 3 0 0 1-3 3H19a3 3 0 0 1-3-3V16l4-7z"/><path d="M16 24h16M16 34h16"/></svg>
+            <h3 id="t-botella-agua">Botella de agua</h3>
+            <p class="codigo">#1 PET Bottles · Plásticos</p>
+            <p>Envase de plástico PET comúnmente utilizado para bebidas y agua.</p>
+          </div>
+          <div class="resultado-cuerpo">
+            <div>
+              <h3>Puntos de reciclaje para este material</h3>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">1</span>Punto Verde Surco</h4><span class="distancia">2.3 km</span></div>
+                <p>Av. Caminos del Inca 1234</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 1 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Vacíos, enjuagados y aplastados.</p></details>
+              </div>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">2</span>Recicla Lima</h4><span class="distancia">4.1 km</span></div>
+                <p>Av. Primavera 456</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 2 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Vacíos, enjuagados y aplastados.</p></details>
+              </div>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">3</span>EcoCentro</h4><span class="distancia">5.6 km</span></div>
+                <p>Av. Principal 789</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 3 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Vacíos, enjuagados y aplastados.</p></details>
+              </div>
+            </div>
+            <div class="mapa" role="img" aria-label="Mapa referencial con los tres puntos de reciclaje">
+              <span class="pin p1">1</span><span class="pin p2">2</span><span class="pin p3">3</span>
+              <p>Mapa de puntos de reciclaje<br><small>Vista referencial: puntos y distancias ficticios.</small></p>
+            </div>
+          </div>
+          <p class="acciones-resultado"><a href="#buscar">Buscar otro material</a> · <a href="#categorias">Ver categorías</a></p>
+        </article>
+        <article id="m-botella-aceite" class="resultado" aria-labelledby="t-botella-aceite">
+          <div class="resumen-material">
+            <svg class="icono" viewBox="0 0 48 48" aria-hidden="true"><path d="M20 4h8v5l4 7v25a3 3 0 0 1-3 3H19a3 3 0 0 1-3-3V16l4-7z"/><path d="M16 24h16M16 34h16"/></svg>
+            <h3 id="t-botella-aceite">Botella de aceite</h3>
+            <p class="codigo">#1 PET Bottles · Plásticos</p>
+            <p>Botella PET de aceite de cocina. Retira el exceso de aceite con papel antes de llevarla.</p>
+          </div>
+          <div class="resultado-cuerpo">
+            <div>
+              <h3>Puntos de reciclaje para este material</h3>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">1</span>Punto Verde Surco</h4><span class="distancia">2.3 km</span></div>
+                <p>Av. Caminos del Inca 1234</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 1 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Vacíos, enjuagados y aplastados.</p></details>
+              </div>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">2</span>Recicla Lima</h4><span class="distancia">4.1 km</span></div>
+                <p>Av. Primavera 456</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 2 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Vacíos, enjuagados y aplastados.</p></details>
+              </div>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">3</span>EcoCentro</h4><span class="distancia">5.6 km</span></div>
+                <p>Av. Principal 789</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 3 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Vacíos, enjuagados y aplastados.</p></details>
+              </div>
+            </div>
+            <div class="mapa" role="img" aria-label="Mapa referencial con los tres puntos de reciclaje">
+              <span class="pin p1">1</span><span class="pin p2">2</span><span class="pin p3">3</span>
+              <p>Mapa de puntos de reciclaje<br><small>Vista referencial: puntos y distancias ficticios.</small></p>
+            </div>
+          </div>
+          <p class="acciones-resultado"><a href="#buscar">Buscar otro material</a> · <a href="#categorias">Ver categorías</a></p>
+        </article>
+        <article id="m-botella-bebida" class="resultado" aria-labelledby="t-botella-bebida">
+          <div class="resumen-material">
+            <svg class="icono" viewBox="0 0 48 48" aria-hidden="true"><path d="M20 4h8v5l4 7v25a3 3 0 0 1-3 3H19a3 3 0 0 1-3-3V16l4-7z"/><path d="M16 24h16M16 34h16"/></svg>
+            <h3 id="t-botella-bebida">Botella de bebida</h3>
+            <p class="codigo">#1 PET Bottles · Plásticos</p>
+            <p>Botella PET de gaseosa, jugo o bebida deportiva. Vacíala y aplástala.</p>
+          </div>
+          <div class="resultado-cuerpo">
+            <div>
+              <h3>Puntos de reciclaje para este material</h3>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">1</span>Punto Verde Surco</h4><span class="distancia">2.3 km</span></div>
+                <p>Av. Caminos del Inca 1234</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 1 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Vacíos, enjuagados y aplastados.</p></details>
+              </div>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">2</span>Recicla Lima</h4><span class="distancia">4.1 km</span></div>
+                <p>Av. Primavera 456</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 2 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Vacíos, enjuagados y aplastados.</p></details>
+              </div>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">3</span>EcoCentro</h4><span class="distancia">5.6 km</span></div>
+                <p>Av. Principal 789</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 3 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Vacíos, enjuagados y aplastados.</p></details>
+              </div>
+            </div>
+            <div class="mapa" role="img" aria-label="Mapa referencial con los tres puntos de reciclaje">
+              <span class="pin p1">1</span><span class="pin p2">2</span><span class="pin p3">3</span>
+              <p>Mapa de puntos de reciclaje<br><small>Vista referencial: puntos y distancias ficticios.</small></p>
+            </div>
+          </div>
+          <p class="acciones-resultado"><a href="#buscar">Buscar otro material</a> · <a href="#categorias">Ver categorías</a></p>
+        </article>
+        <article id="m-envase-fruta" class="resultado" aria-labelledby="t-envase-fruta">
+          <div class="resumen-material">
+            <svg class="icono" viewBox="0 0 48 48" aria-hidden="true"><path d="M20 4h8v5l4 7v25a3 3 0 0 1-3 3H19a3 3 0 0 1-3-3V16l4-7z"/><path d="M16 24h16M16 34h16"/></svg>
+            <h3 id="t-envase-fruta">Envase transparente de fruta</h3>
+            <p class="codigo">#1 PET · Plásticos</p>
+            <p>Envase rígido y transparente de frutas o ensaladas, también de PET.</p>
+          </div>
+          <div class="resultado-cuerpo">
+            <div>
+              <h3>Puntos de reciclaje para este material</h3>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">1</span>Punto Verde Surco</h4><span class="distancia">2.3 km</span></div>
+                <p>Av. Caminos del Inca 1234</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 1 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Vacíos, enjuagados y aplastados.</p></details>
+              </div>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">2</span>Recicla Lima</h4><span class="distancia">4.1 km</span></div>
+                <p>Av. Primavera 456</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 2 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Vacíos, enjuagados y aplastados.</p></details>
+              </div>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">3</span>EcoCentro</h4><span class="distancia">5.6 km</span></div>
+                <p>Av. Principal 789</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 3 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Vacíos, enjuagados y aplastados.</p></details>
+              </div>
+            </div>
+            <div class="mapa" role="img" aria-label="Mapa referencial con los tres puntos de reciclaje">
+              <span class="pin p1">1</span><span class="pin p2">2</span><span class="pin p3">3</span>
+              <p>Mapa de puntos de reciclaje<br><small>Vista referencial: puntos y distancias ficticios.</small></p>
+            </div>
+          </div>
+          <p class="acciones-resultado"><a href="#buscar">Buscar otro material</a> · <a href="#categorias">Ver categorías</a></p>
+        </article>
+        <article id="m-botella-detergente" class="resultado" aria-labelledby="t-botella-detergente">
+          <div class="resumen-material">
+            <svg class="icono" viewBox="0 0 48 48" aria-hidden="true"><path d="M20 4h8v5l4 7v25a3 3 0 0 1-3 3H19a3 3 0 0 1-3-3V16l4-7z"/><path d="M16 24h16M16 34h16"/></svg>
+            <h3 id="t-botella-detergente">Botella de detergente</h3>
+            <p class="codigo">#2 HDPE · Plásticos</p>
+            <p>Plástico grueso y opaco, resistente a productos de limpieza.</p>
+          </div>
+          <div class="resultado-cuerpo">
+            <div>
+              <h3>Puntos de reciclaje para este material</h3>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">1</span>Punto Verde Surco</h4><span class="distancia">2.3 km</span></div>
+                <p>Av. Caminos del Inca 1234</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 1 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Vacíos, enjuagados y aplastados.</p></details>
+              </div>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">2</span>Recicla Lima</h4><span class="distancia">4.1 km</span></div>
+                <p>Av. Primavera 456</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 2 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Vacíos, enjuagados y aplastados.</p></details>
+              </div>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">3</span>EcoCentro</h4><span class="distancia">5.6 km</span></div>
+                <p>Av. Principal 789</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 3 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Vacíos, enjuagados y aplastados.</p></details>
+              </div>
+            </div>
+            <div class="mapa" role="img" aria-label="Mapa referencial con los tres puntos de reciclaje">
+              <span class="pin p1">1</span><span class="pin p2">2</span><span class="pin p3">3</span>
+              <p>Mapa de puntos de reciclaje<br><small>Vista referencial: puntos y distancias ficticios.</small></p>
+            </div>
+          </div>
+          <p class="acciones-resultado"><a href="#buscar">Buscar otro material</a> · <a href="#categorias">Ver categorías</a></p>
+        </article>
+        <article id="m-botella-shampoo" class="resultado" aria-labelledby="t-botella-shampoo">
+          <div class="resumen-material">
+            <svg class="icono" viewBox="0 0 48 48" aria-hidden="true"><path d="M20 4h8v5l4 7v25a3 3 0 0 1-3 3H19a3 3 0 0 1-3-3V16l4-7z"/><path d="M16 24h16M16 34h16"/></svg>
+            <h3 id="t-botella-shampoo">Botella de shampoo</h3>
+            <p class="codigo">#2 HDPE · Plásticos</p>
+            <p>Envase opaco de productos de higiene. Enjuágalo antes de llevarlo.</p>
+          </div>
+          <div class="resultado-cuerpo">
+            <div>
+              <h3>Puntos de reciclaje para este material</h3>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">1</span>Punto Verde Surco</h4><span class="distancia">2.3 km</span></div>
+                <p>Av. Caminos del Inca 1234</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 1 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Vacíos, enjuagados y aplastados.</p></details>
+              </div>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">2</span>Recicla Lima</h4><span class="distancia">4.1 km</span></div>
+                <p>Av. Primavera 456</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 2 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Vacíos, enjuagados y aplastados.</p></details>
+              </div>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">3</span>EcoCentro</h4><span class="distancia">5.6 km</span></div>
+                <p>Av. Principal 789</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 3 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Vacíos, enjuagados y aplastados.</p></details>
+              </div>
+            </div>
+            <div class="mapa" role="img" aria-label="Mapa referencial con los tres puntos de reciclaje">
+              <span class="pin p1">1</span><span class="pin p2">2</span><span class="pin p3">3</span>
+              <p>Mapa de puntos de reciclaje<br><small>Vista referencial: puntos y distancias ficticios.</small></p>
+            </div>
+          </div>
+          <p class="acciones-resultado"><a href="#buscar">Buscar otro material</a> · <a href="#categorias">Ver categorías</a></p>
+        </article>
+        <article id="m-tuberia-pvc" class="resultado" aria-labelledby="t-tuberia-pvc">
+          <div class="resumen-material">
+            <svg class="icono" viewBox="0 0 48 48" aria-hidden="true"><path d="M20 4h8v5l4 7v25a3 3 0 0 1-3 3H19a3 3 0 0 1-3-3V16l4-7z"/><path d="M16 24h16M16 34h16"/></svg>
+            <h3 id="t-tuberia-pvc">Tubería de PVC</h3>
+            <p class="codigo">#3 PVC · Plásticos</p>
+            <p>Plástico rígido usado en construcción. Pocos puntos lo reciben: consulta antes de ir.</p>
+          </div>
+          <div class="resultado-cuerpo">
+            <div>
+              <h3>Puntos de reciclaje para este material</h3>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">1</span>Punto Verde Surco</h4><span class="distancia">2.3 km</span></div>
+                <p>Av. Caminos del Inca 1234</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 1 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Vacíos, enjuagados y aplastados.</p></details>
+              </div>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">2</span>Recicla Lima</h4><span class="distancia">4.1 km</span></div>
+                <p>Av. Primavera 456</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 2 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Vacíos, enjuagados y aplastados.</p></details>
+              </div>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">3</span>EcoCentro</h4><span class="distancia">5.6 km</span></div>
+                <p>Av. Principal 789</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 3 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Vacíos, enjuagados y aplastados.</p></details>
+              </div>
+            </div>
+            <div class="mapa" role="img" aria-label="Mapa referencial con los tres puntos de reciclaje">
+              <span class="pin p1">1</span><span class="pin p2">2</span><span class="pin p3">3</span>
+              <p>Mapa de puntos de reciclaje<br><small>Vista referencial: puntos y distancias ficticios.</small></p>
+            </div>
+          </div>
+          <p class="acciones-resultado"><a href="#buscar">Buscar otro material</a> · <a href="#categorias">Ver categorías</a></p>
+        </article>
+        <article id="m-bolsa-plastico" class="resultado" aria-labelledby="t-bolsa-plastico">
+          <div class="resumen-material">
+            <svg class="icono" viewBox="0 0 48 48" aria-hidden="true"><path d="M20 4h8v5l4 7v25a3 3 0 0 1-3 3H19a3 3 0 0 1-3-3V16l4-7z"/><path d="M16 24h16M16 34h16"/></svg>
+            <h3 id="t-bolsa-plastico">Bolsa de plástico</h3>
+            <p class="codigo">#4 LDPE · Plásticos</p>
+            <p>Bolsa delgada y flexible de compras o de pan. Junta varias dentro de una sola bolsa.</p>
+          </div>
+          <div class="resultado-cuerpo">
+            <div>
+              <h3>Puntos de reciclaje para este material</h3>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">1</span>Punto Verde Surco</h4><span class="distancia">2.3 km</span></div>
+                <p>Av. Caminos del Inca 1234</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 1 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Vacíos, enjuagados y aplastados.</p></details>
+              </div>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">2</span>Recicla Lima</h4><span class="distancia">4.1 km</span></div>
+                <p>Av. Primavera 456</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 2 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Vacíos, enjuagados y aplastados.</p></details>
+              </div>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">3</span>EcoCentro</h4><span class="distancia">5.6 km</span></div>
+                <p>Av. Principal 789</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 3 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Vacíos, enjuagados y aplastados.</p></details>
+              </div>
+            </div>
+            <div class="mapa" role="img" aria-label="Mapa referencial con los tres puntos de reciclaje">
+              <span class="pin p1">1</span><span class="pin p2">2</span><span class="pin p3">3</span>
+              <p>Mapa de puntos de reciclaje<br><small>Vista referencial: puntos y distancias ficticios.</small></p>
+            </div>
+          </div>
+          <p class="acciones-resultado"><a href="#buscar">Buscar otro material</a> · <a href="#categorias">Ver categorías</a></p>
+        </article>
+        <article id="m-film-embalaje" class="resultado" aria-labelledby="t-film-embalaje">
+          <div class="resumen-material">
+            <svg class="icono" viewBox="0 0 48 48" aria-hidden="true"><path d="M20 4h8v5l4 7v25a3 3 0 0 1-3 3H19a3 3 0 0 1-3-3V16l4-7z"/><path d="M16 24h16M16 34h16"/></svg>
+            <h3 id="t-film-embalaje">Film de embalaje</h3>
+            <p class="codigo">#4 LDPE · Plásticos</p>
+            <p>Plástico estirable que envuelve paquetes y mercadería.</p>
+          </div>
+          <div class="resultado-cuerpo">
+            <div>
+              <h3>Puntos de reciclaje para este material</h3>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">1</span>Punto Verde Surco</h4><span class="distancia">2.3 km</span></div>
+                <p>Av. Caminos del Inca 1234</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 1 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Vacíos, enjuagados y aplastados.</p></details>
+              </div>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">2</span>Recicla Lima</h4><span class="distancia">4.1 km</span></div>
+                <p>Av. Primavera 456</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 2 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Vacíos, enjuagados y aplastados.</p></details>
+              </div>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">3</span>EcoCentro</h4><span class="distancia">5.6 km</span></div>
+                <p>Av. Principal 789</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 3 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Vacíos, enjuagados y aplastados.</p></details>
+              </div>
+            </div>
+            <div class="mapa" role="img" aria-label="Mapa referencial con los tres puntos de reciclaje">
+              <span class="pin p1">1</span><span class="pin p2">2</span><span class="pin p3">3</span>
+              <p>Mapa de puntos de reciclaje<br><small>Vista referencial: puntos y distancias ficticios.</small></p>
+            </div>
+          </div>
+          <p class="acciones-resultado"><a href="#buscar">Buscar otro material</a> · <a href="#categorias">Ver categorías</a></p>
+        </article>
+        <article id="m-tapa-botella" class="resultado" aria-labelledby="t-tapa-botella">
+          <div class="resumen-material">
+            <svg class="icono" viewBox="0 0 48 48" aria-hidden="true"><path d="M20 4h8v5l4 7v25a3 3 0 0 1-3 3H19a3 3 0 0 1-3-3V16l4-7z"/><path d="M16 24h16M16 34h16"/></svg>
+            <h3 id="t-tapa-botella">Tapa de botella</h3>
+            <p class="codigo">#5 PP · Plásticos</p>
+            <p>Tapa rígida de botellas. Llévala separada de la botella.</p>
+          </div>
+          <div class="resultado-cuerpo">
+            <div>
+              <h3>Puntos de reciclaje para este material</h3>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">1</span>Punto Verde Surco</h4><span class="distancia">2.3 km</span></div>
+                <p>Av. Caminos del Inca 1234</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 1 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Vacíos, enjuagados y aplastados.</p></details>
+              </div>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">2</span>Recicla Lima</h4><span class="distancia">4.1 km</span></div>
+                <p>Av. Primavera 456</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 2 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Vacíos, enjuagados y aplastados.</p></details>
+              </div>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">3</span>EcoCentro</h4><span class="distancia">5.6 km</span></div>
+                <p>Av. Principal 789</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 3 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Vacíos, enjuagados y aplastados.</p></details>
+              </div>
+            </div>
+            <div class="mapa" role="img" aria-label="Mapa referencial con los tres puntos de reciclaje">
+              <span class="pin p1">1</span><span class="pin p2">2</span><span class="pin p3">3</span>
+              <p>Mapa de puntos de reciclaje<br><small>Vista referencial: puntos y distancias ficticios.</small></p>
+            </div>
+          </div>
+          <p class="acciones-resultado"><a href="#buscar">Buscar otro material</a> · <a href="#categorias">Ver categorías</a></p>
+        </article>
+        <article id="m-taper-comida" class="resultado" aria-labelledby="t-taper-comida">
+          <div class="resumen-material">
+            <svg class="icono" viewBox="0 0 48 48" aria-hidden="true"><path d="M20 4h8v5l4 7v25a3 3 0 0 1-3 3H19a3 3 0 0 1-3-3V16l4-7z"/><path d="M16 24h16M16 34h16"/></svg>
+            <h3 id="t-taper-comida">Táper de comida</h3>
+            <p class="codigo">#5 PP · Plásticos</p>
+            <p>Recipiente de comida. Si está en buen estado, reutilízalo antes de reciclarlo.</p>
+          </div>
+          <div class="resultado-cuerpo">
+            <div>
+              <h3>Puntos de reciclaje para este material</h3>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">1</span>Punto Verde Surco</h4><span class="distancia">2.3 km</span></div>
+                <p>Av. Caminos del Inca 1234</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 1 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Vacíos, enjuagados y aplastados.</p></details>
+              </div>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">2</span>Recicla Lima</h4><span class="distancia">4.1 km</span></div>
+                <p>Av. Primavera 456</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 2 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Vacíos, enjuagados y aplastados.</p></details>
+              </div>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">3</span>EcoCentro</h4><span class="distancia">5.6 km</span></div>
+                <p>Av. Principal 789</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 3 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Vacíos, enjuagados y aplastados.</p></details>
+              </div>
+            </div>
+            <div class="mapa" role="img" aria-label="Mapa referencial con los tres puntos de reciclaje">
+              <span class="pin p1">1</span><span class="pin p2">2</span><span class="pin p3">3</span>
+              <p>Mapa de puntos de reciclaje<br><small>Vista referencial: puntos y distancias ficticios.</small></p>
+            </div>
+          </div>
+          <p class="acciones-resultado"><a href="#buscar">Buscar otro material</a> · <a href="#categorias">Ver categorías</a></p>
+        </article>
+        <article id="m-envase-yogurt" class="resultado" aria-labelledby="t-envase-yogurt">
+          <div class="resumen-material">
+            <svg class="icono" viewBox="0 0 48 48" aria-hidden="true"><path d="M20 4h8v5l4 7v25a3 3 0 0 1-3 3H19a3 3 0 0 1-3-3V16l4-7z"/><path d="M16 24h16M16 34h16"/></svg>
+            <h3 id="t-envase-yogurt">Envase de yogurt</h3>
+            <p class="codigo">#5 PP · Plásticos</p>
+            <p>Envase de yogurt o postre. Enjuágalo para evitar malos olores.</p>
+          </div>
+          <div class="resultado-cuerpo">
+            <div>
+              <h3>Puntos de reciclaje para este material</h3>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">1</span>Punto Verde Surco</h4><span class="distancia">2.3 km</span></div>
+                <p>Av. Caminos del Inca 1234</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 1 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Vacíos, enjuagados y aplastados.</p></details>
+              </div>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">2</span>Recicla Lima</h4><span class="distancia">4.1 km</span></div>
+                <p>Av. Primavera 456</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 2 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Vacíos, enjuagados y aplastados.</p></details>
+              </div>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">3</span>EcoCentro</h4><span class="distancia">5.6 km</span></div>
+                <p>Av. Principal 789</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 3 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Vacíos, enjuagados y aplastados.</p></details>
+              </div>
+            </div>
+            <div class="mapa" role="img" aria-label="Mapa referencial con los tres puntos de reciclaje">
+              <span class="pin p1">1</span><span class="pin p2">2</span><span class="pin p3">3</span>
+              <p>Mapa de puntos de reciclaje<br><small>Vista referencial: puntos y distancias ficticios.</small></p>
+            </div>
+          </div>
+          <p class="acciones-resultado"><a href="#buscar">Buscar otro material</a> · <a href="#categorias">Ver categorías</a></p>
+        </article>
+        <article id="m-vaso-descartable" class="resultado" aria-labelledby="t-vaso-descartable">
+          <div class="resumen-material">
+            <svg class="icono" viewBox="0 0 48 48" aria-hidden="true"><path d="M20 4h8v5l4 7v25a3 3 0 0 1-3 3H19a3 3 0 0 1-3-3V16l4-7z"/><path d="M16 24h16M16 34h16"/></svg>
+            <h3 id="t-vaso-descartable">Vaso descartable</h3>
+            <p class="codigo">#6 PS · Plásticos</p>
+            <p>Vaso rígido de un solo uso. Pocos puntos lo reciben: mejor evítalo.</p>
+          </div>
+          <div class="resultado-cuerpo">
+            <div>
+              <h3>Puntos de reciclaje para este material</h3>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">1</span>Punto Verde Surco</h4><span class="distancia">2.3 km</span></div>
+                <p>Av. Caminos del Inca 1234</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 1 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Vacíos, enjuagados y aplastados.</p></details>
+              </div>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">2</span>Recicla Lima</h4><span class="distancia">4.1 km</span></div>
+                <p>Av. Primavera 456</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 2 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Vacíos, enjuagados y aplastados.</p></details>
+              </div>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">3</span>EcoCentro</h4><span class="distancia">5.6 km</span></div>
+                <p>Av. Principal 789</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 3 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Vacíos, enjuagados y aplastados.</p></details>
+              </div>
+            </div>
+            <div class="mapa" role="img" aria-label="Mapa referencial con los tres puntos de reciclaje">
+              <span class="pin p1">1</span><span class="pin p2">2</span><span class="pin p3">3</span>
+              <p>Mapa de puntos de reciclaje<br><small>Vista referencial: puntos y distancias ficticios.</small></p>
+            </div>
+          </div>
+          <p class="acciones-resultado"><a href="#buscar">Buscar otro material</a> · <a href="#categorias">Ver categorías</a></p>
+        </article>
+        <article id="m-bandeja-tecnopor" class="resultado" aria-labelledby="t-bandeja-tecnopor">
+          <div class="resumen-material">
+            <svg class="icono" viewBox="0 0 48 48" aria-hidden="true"><path d="M20 4h8v5l4 7v25a3 3 0 0 1-3 3H19a3 3 0 0 1-3-3V16l4-7z"/><path d="M16 24h16M16 34h16"/></svg>
+            <h3 id="t-bandeja-tecnopor">Bandeja de tecnopor</h3>
+            <p class="codigo">#6 PS · Plásticos</p>
+            <p>Poliestireno expandido de bandejas de carne o comida. Debe estar limpio.</p>
+          </div>
+          <div class="resultado-cuerpo">
+            <div>
+              <h3>Puntos de reciclaje para este material</h3>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">1</span>Punto Verde Surco</h4><span class="distancia">2.3 km</span></div>
+                <p>Av. Caminos del Inca 1234</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 1 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Vacíos, enjuagados y aplastados.</p></details>
+              </div>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">2</span>Recicla Lima</h4><span class="distancia">4.1 km</span></div>
+                <p>Av. Primavera 456</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 2 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Vacíos, enjuagados y aplastados.</p></details>
+              </div>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">3</span>EcoCentro</h4><span class="distancia">5.6 km</span></div>
+                <p>Av. Principal 789</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 3 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Vacíos, enjuagados y aplastados.</p></details>
+              </div>
+            </div>
+            <div class="mapa" role="img" aria-label="Mapa referencial con los tres puntos de reciclaje">
+              <span class="pin p1">1</span><span class="pin p2">2</span><span class="pin p3">3</span>
+              <p>Mapa de puntos de reciclaje<br><small>Vista referencial: puntos y distancias ficticios.</small></p>
+            </div>
+          </div>
+          <p class="acciones-resultado"><a href="#buscar">Buscar otro material</a> · <a href="#categorias">Ver categorías</a></p>
+        </article>
+        <article id="m-cubiertos-descartables" class="resultado" aria-labelledby="t-cubiertos-descartables">
+          <div class="resumen-material">
+            <svg class="icono" viewBox="0 0 48 48" aria-hidden="true"><path d="M20 4h8v5l4 7v25a3 3 0 0 1-3 3H19a3 3 0 0 1-3-3V16l4-7z"/><path d="M16 24h16M16 34h16"/></svg>
+            <h3 id="t-cubiertos-descartables">Cubiertos descartables</h3>
+            <p class="codigo">#6 PS · Plásticos</p>
+            <p>Tenedores y cucharas de un solo uso. Reemplázalos por cubiertos reutilizables.</p>
+          </div>
+          <div class="resultado-cuerpo">
+            <div>
+              <h3>Puntos de reciclaje para este material</h3>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">1</span>Punto Verde Surco</h4><span class="distancia">2.3 km</span></div>
+                <p>Av. Caminos del Inca 1234</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 1 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Vacíos, enjuagados y aplastados.</p></details>
+              </div>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">2</span>Recicla Lima</h4><span class="distancia">4.1 km</span></div>
+                <p>Av. Primavera 456</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 2 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Vacíos, enjuagados y aplastados.</p></details>
+              </div>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">3</span>EcoCentro</h4><span class="distancia">5.6 km</span></div>
+                <p>Av. Principal 789</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 3 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Vacíos, enjuagados y aplastados.</p></details>
+              </div>
+            </div>
+            <div class="mapa" role="img" aria-label="Mapa referencial con los tres puntos de reciclaje">
+              <span class="pin p1">1</span><span class="pin p2">2</span><span class="pin p3">3</span>
+              <p>Mapa de puntos de reciclaje<br><small>Vista referencial: puntos y distancias ficticios.</small></p>
+            </div>
+          </div>
+          <p class="acciones-resultado"><a href="#buscar">Buscar otro material</a> · <a href="#categorias">Ver categorías</a></p>
+        </article>
+        <article id="m-envoltura-snack" class="resultado" aria-labelledby="t-envoltura-snack">
+          <div class="resumen-material">
+            <svg class="icono" viewBox="0 0 48 48" aria-hidden="true"><path d="M20 4h8v5l4 7v25a3 3 0 0 1-3 3H19a3 3 0 0 1-3-3V16l4-7z"/><path d="M16 24h16M16 34h16"/></svg>
+            <h3 id="t-envoltura-snack">Envoltura de snacks</h3>
+            <p class="codigo">#7 OTHER · Plásticos</p>
+            <p>Empaque multicapa de papitas o galletas. Pocos puntos lo reciben: consulta antes de ir.</p>
+          </div>
+          <div class="resultado-cuerpo">
+            <div>
+              <h3>Puntos de reciclaje para este material</h3>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">1</span>Punto Verde Surco</h4><span class="distancia">2.3 km</span></div>
+                <p>Av. Caminos del Inca 1234</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 1 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Vacíos, enjuagados y aplastados.</p></details>
+              </div>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">2</span>Recicla Lima</h4><span class="distancia">4.1 km</span></div>
+                <p>Av. Primavera 456</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 2 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Vacíos, enjuagados y aplastados.</p></details>
+              </div>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">3</span>EcoCentro</h4><span class="distancia">5.6 km</span></div>
+                <p>Av. Principal 789</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 3 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Vacíos, enjuagados y aplastados.</p></details>
+              </div>
+            </div>
+            <div class="mapa" role="img" aria-label="Mapa referencial con los tres puntos de reciclaje">
+              <span class="pin p1">1</span><span class="pin p2">2</span><span class="pin p3">3</span>
+              <p>Mapa de puntos de reciclaje<br><small>Vista referencial: puntos y distancias ficticios.</small></p>
+            </div>
+          </div>
+          <p class="acciones-resultado"><a href="#buscar">Buscar otro material</a> · <a href="#categorias">Ver categorías</a></p>
+        </article>
+        <article id="m-botella-vidrio" class="resultado" aria-labelledby="t-botella-vidrio">
+          <div class="resumen-material">
+            <svg class="icono" viewBox="0 0 48 48" aria-hidden="true"><rect x="14" y="5" width="20" height="7" rx="2"/><path d="M15 12h18v4c3 2 4 5 4 8v17a3 3 0 0 1-3 3H14a3 3 0 0 1-3-3V24c0-3 1-6 4-8z"/></svg>
+            <h3 id="t-botella-vidrio">Botella de vidrio</h3>
+            <p class="codigo">#70 Glass · Vidrio</p>
+            <p>Botella de vidrio transparente de bebidas. Retira la tapa.</p>
+          </div>
+          <div class="resultado-cuerpo">
+            <div>
+              <h3>Puntos de reciclaje para este material</h3>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">1</span>Punto Verde Surco</h4><span class="distancia">2.3 km</span></div>
+                <p>Av. Caminos del Inca 1234</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 1 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Sin tapa y sin mezclar con vidrio de ventanas o espejos.</p></details>
+              </div>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">2</span>Vidrio Vuelve</h4><span class="distancia">3.2 km</span></div>
+                <p>Jr. Las Flores 210</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 2 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Sin tapa y sin mezclar con vidrio de ventanas o espejos.</p></details>
+              </div>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">3</span>EcoCentro</h4><span class="distancia">5.6 km</span></div>
+                <p>Av. Principal 789</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 3 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Sin tapa y sin mezclar con vidrio de ventanas o espejos.</p></details>
+              </div>
+            </div>
+            <div class="mapa" role="img" aria-label="Mapa referencial con los tres puntos de reciclaje">
+              <span class="pin p1">1</span><span class="pin p2">2</span><span class="pin p3">3</span>
+              <p>Mapa de puntos de reciclaje<br><small>Vista referencial: puntos y distancias ficticios.</small></p>
+            </div>
+          </div>
+          <p class="acciones-resultado"><a href="#buscar">Buscar otro material</a> · <a href="#categorias">Ver categorías</a></p>
+        </article>
+        <article id="m-frasco-mermelada" class="resultado" aria-labelledby="t-frasco-mermelada">
+          <div class="resumen-material">
+            <svg class="icono" viewBox="0 0 48 48" aria-hidden="true"><rect x="14" y="5" width="20" height="7" rx="2"/><path d="M15 12h18v4c3 2 4 5 4 8v17a3 3 0 0 1-3 3H14a3 3 0 0 1-3-3V24c0-3 1-6 4-8z"/></svg>
+            <h3 id="t-frasco-mermelada">Frasco de mermelada</h3>
+            <p class="codigo">#70 Glass · Vidrio</p>
+            <p>Frasco de vidrio transparente. La tapa metálica va con los metales.</p>
+          </div>
+          <div class="resultado-cuerpo">
+            <div>
+              <h3>Puntos de reciclaje para este material</h3>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">1</span>Punto Verde Surco</h4><span class="distancia">2.3 km</span></div>
+                <p>Av. Caminos del Inca 1234</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 1 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Sin tapa y sin mezclar con vidrio de ventanas o espejos.</p></details>
+              </div>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">2</span>Vidrio Vuelve</h4><span class="distancia">3.2 km</span></div>
+                <p>Jr. Las Flores 210</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 2 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Sin tapa y sin mezclar con vidrio de ventanas o espejos.</p></details>
+              </div>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">3</span>EcoCentro</h4><span class="distancia">5.6 km</span></div>
+                <p>Av. Principal 789</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 3 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Sin tapa y sin mezclar con vidrio de ventanas o espejos.</p></details>
+              </div>
+            </div>
+            <div class="mapa" role="img" aria-label="Mapa referencial con los tres puntos de reciclaje">
+              <span class="pin p1">1</span><span class="pin p2">2</span><span class="pin p3">3</span>
+              <p>Mapa de puntos de reciclaje<br><small>Vista referencial: puntos y distancias ficticios.</small></p>
+            </div>
+          </div>
+          <p class="acciones-resultado"><a href="#buscar">Buscar otro material</a> · <a href="#categorias">Ver categorías</a></p>
+        </article>
+        <article id="m-botella-vino" class="resultado" aria-labelledby="t-botella-vino">
+          <div class="resumen-material">
+            <svg class="icono" viewBox="0 0 48 48" aria-hidden="true"><rect x="14" y="5" width="20" height="7" rx="2"/><path d="M15 12h18v4c3 2 4 5 4 8v17a3 3 0 0 1-3 3H14a3 3 0 0 1-3-3V24c0-3 1-6 4-8z"/></svg>
+            <h3 id="t-botella-vino">Botella de vino</h3>
+            <p class="codigo">#71 Glass · Vidrio</p>
+            <p>Vidrio verde. No lo mezcles con vidrio de ventanas ni espejos.</p>
+          </div>
+          <div class="resultado-cuerpo">
+            <div>
+              <h3>Puntos de reciclaje para este material</h3>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">1</span>Punto Verde Surco</h4><span class="distancia">2.3 km</span></div>
+                <p>Av. Caminos del Inca 1234</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 1 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Sin tapa y sin mezclar con vidrio de ventanas o espejos.</p></details>
+              </div>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">2</span>Vidrio Vuelve</h4><span class="distancia">3.2 km</span></div>
+                <p>Jr. Las Flores 210</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 2 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Sin tapa y sin mezclar con vidrio de ventanas o espejos.</p></details>
+              </div>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">3</span>EcoCentro</h4><span class="distancia">5.6 km</span></div>
+                <p>Av. Principal 789</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 3 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Sin tapa y sin mezclar con vidrio de ventanas o espejos.</p></details>
+              </div>
+            </div>
+            <div class="mapa" role="img" aria-label="Mapa referencial con los tres puntos de reciclaje">
+              <span class="pin p1">1</span><span class="pin p2">2</span><span class="pin p3">3</span>
+              <p>Mapa de puntos de reciclaje<br><small>Vista referencial: puntos y distancias ficticios.</small></p>
+            </div>
+          </div>
+          <p class="acciones-resultado"><a href="#buscar">Buscar otro material</a> · <a href="#categorias">Ver categorías</a></p>
+        </article>
+        <article id="m-botella-cerveza" class="resultado" aria-labelledby="t-botella-cerveza">
+          <div class="resumen-material">
+            <svg class="icono" viewBox="0 0 48 48" aria-hidden="true"><rect x="14" y="5" width="20" height="7" rx="2"/><path d="M15 12h18v4c3 2 4 5 4 8v17a3 3 0 0 1-3 3H14a3 3 0 0 1-3-3V24c0-3 1-6 4-8z"/></svg>
+            <h3 id="t-botella-cerveza">Botella de cerveza</h3>
+            <p class="codigo">#72 Glass · Vidrio</p>
+            <p>Vidrio ámbar. Llévala vacía y sin chapa.</p>
+          </div>
+          <div class="resultado-cuerpo">
+            <div>
+              <h3>Puntos de reciclaje para este material</h3>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">1</span>Punto Verde Surco</h4><span class="distancia">2.3 km</span></div>
+                <p>Av. Caminos del Inca 1234</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 1 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Sin tapa y sin mezclar con vidrio de ventanas o espejos.</p></details>
+              </div>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">2</span>Vidrio Vuelve</h4><span class="distancia">3.2 km</span></div>
+                <p>Jr. Las Flores 210</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 2 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Sin tapa y sin mezclar con vidrio de ventanas o espejos.</p></details>
+              </div>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">3</span>EcoCentro</h4><span class="distancia">5.6 km</span></div>
+                <p>Av. Principal 789</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 3 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Sin tapa y sin mezclar con vidrio de ventanas o espejos.</p></details>
+              </div>
+            </div>
+            <div class="mapa" role="img" aria-label="Mapa referencial con los tres puntos de reciclaje">
+              <span class="pin p1">1</span><span class="pin p2">2</span><span class="pin p3">3</span>
+              <p>Mapa de puntos de reciclaje<br><small>Vista referencial: puntos y distancias ficticios.</small></p>
+            </div>
+          </div>
+          <p class="acciones-resultado"><a href="#buscar">Buscar otro material</a> · <a href="#categorias">Ver categorías</a></p>
+        </article>
+        <article id="m-caja-carton" class="resultado" aria-labelledby="t-caja-carton">
+          <div class="resumen-material">
+            <svg class="icono" viewBox="0 0 48 48" aria-hidden="true"><path d="M6 16l18-8 18 8v20l-18 8-18-8z"/><path d="M6 16l18 8 18-8M24 24v20"/></svg>
+            <h3 id="t-caja-carton">Caja de cartón</h3>
+            <p class="codigo">#20 PAP · Papel y cartón</p>
+            <p>Cartón corrugado de envíos y mudanzas. Aplánala y retira la cinta.</p>
+          </div>
+          <div class="resultado-cuerpo">
+            <div>
+              <h3>Puntos de reciclaje para este material</h3>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">1</span>Acopio Papelito</h4><span class="distancia">1.8 km</span></div>
+                <p>Calle Los Pinos 88</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 1 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Limpios, secos, aplanados y sin grapas.</p></details>
+              </div>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">2</span>Recicla Lima</h4><span class="distancia">4.1 km</span></div>
+                <p>Av. Primavera 456</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 2 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Limpios, secos, aplanados y sin grapas.</p></details>
+              </div>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">3</span>EcoCentro</h4><span class="distancia">5.6 km</span></div>
+                <p>Av. Principal 789</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 3 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Limpios, secos, aplanados y sin grapas.</p></details>
+              </div>
+            </div>
+            <div class="mapa" role="img" aria-label="Mapa referencial con los tres puntos de reciclaje">
+              <span class="pin p1">1</span><span class="pin p2">2</span><span class="pin p3">3</span>
+              <p>Mapa de puntos de reciclaje<br><small>Vista referencial: puntos y distancias ficticios.</small></p>
+            </div>
+          </div>
+          <p class="acciones-resultado"><a href="#buscar">Buscar otro material</a> · <a href="#categorias">Ver categorías</a></p>
+        </article>
+        <article id="m-caja-cereal" class="resultado" aria-labelledby="t-caja-cereal">
+          <div class="resumen-material">
+            <svg class="icono" viewBox="0 0 48 48" aria-hidden="true"><path d="M6 16l18-8 18 8v20l-18 8-18-8z"/><path d="M6 16l18 8 18-8M24 24v20"/></svg>
+            <h3 id="t-caja-cereal">Caja de cereal</h3>
+            <p class="codigo">#21 PAP · Papel y cartón</p>
+            <p>Cartulina delgada de cajas de alimentos. Retira la bolsa interior.</p>
+          </div>
+          <div class="resultado-cuerpo">
+            <div>
+              <h3>Puntos de reciclaje para este material</h3>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">1</span>Acopio Papelito</h4><span class="distancia">1.8 km</span></div>
+                <p>Calle Los Pinos 88</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 1 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Limpios, secos, aplanados y sin grapas.</p></details>
+              </div>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">2</span>Recicla Lima</h4><span class="distancia">4.1 km</span></div>
+                <p>Av. Primavera 456</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 2 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Limpios, secos, aplanados y sin grapas.</p></details>
+              </div>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">3</span>EcoCentro</h4><span class="distancia">5.6 km</span></div>
+                <p>Av. Principal 789</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 3 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Limpios, secos, aplanados y sin grapas.</p></details>
+              </div>
+            </div>
+            <div class="mapa" role="img" aria-label="Mapa referencial con los tres puntos de reciclaje">
+              <span class="pin p1">1</span><span class="pin p2">2</span><span class="pin p3">3</span>
+              <p>Mapa de puntos de reciclaje<br><small>Vista referencial: puntos y distancias ficticios.</small></p>
+            </div>
+          </div>
+          <p class="acciones-resultado"><a href="#buscar">Buscar otro material</a> · <a href="#categorias">Ver categorías</a></p>
+        </article>
+        <article id="m-periodico-hojas" class="resultado" aria-labelledby="t-periodico-hojas">
+          <div class="resumen-material">
+            <svg class="icono" viewBox="0 0 48 48" aria-hidden="true"><path d="M6 16l18-8 18 8v20l-18 8-18-8z"/><path d="M6 16l18 8 18-8M24 24v20"/></svg>
+            <h3 id="t-periodico-hojas">Periódico y hojas</h3>
+            <p class="codigo">#22 PAP · Papel y cartón</p>
+            <p>Periódicos, cuadernos y hojas impresas, secos y sin grapas.</p>
+          </div>
+          <div class="resultado-cuerpo">
+            <div>
+              <h3>Puntos de reciclaje para este material</h3>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">1</span>Acopio Papelito</h4><span class="distancia">1.8 km</span></div>
+                <p>Calle Los Pinos 88</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 1 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Limpios, secos, aplanados y sin grapas.</p></details>
+              </div>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">2</span>Recicla Lima</h4><span class="distancia">4.1 km</span></div>
+                <p>Av. Primavera 456</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 2 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Limpios, secos, aplanados y sin grapas.</p></details>
+              </div>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">3</span>EcoCentro</h4><span class="distancia">5.6 km</span></div>
+                <p>Av. Principal 789</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 3 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Limpios, secos, aplanados y sin grapas.</p></details>
+              </div>
+            </div>
+            <div class="mapa" role="img" aria-label="Mapa referencial con los tres puntos de reciclaje">
+              <span class="pin p1">1</span><span class="pin p2">2</span><span class="pin p3">3</span>
+              <p>Mapa de puntos de reciclaje<br><small>Vista referencial: puntos y distancias ficticios.</small></p>
+            </div>
+          </div>
+          <p class="acciones-resultado"><a href="#buscar">Buscar otro material</a> · <a href="#categorias">Ver categorías</a></p>
+        </article>
+        <article id="m-caja-leche" class="resultado" aria-labelledby="t-caja-leche">
+          <div class="resumen-material">
+            <svg class="icono" viewBox="0 0 48 48" aria-hidden="true"><path d="M6 16l18-8 18 8v20l-18 8-18-8z"/><path d="M6 16l18 8 18-8M24 24v20"/></svg>
+            <h3 id="t-caja-leche">Envase de leche tipo caja</h3>
+            <p class="codigo">#84 C/PAP · Papel y cartón</p>
+            <p>Envase multicapa de cartón, plástico y aluminio. Enjuágalo y aplánalo.</p>
+          </div>
+          <div class="resultado-cuerpo">
+            <div>
+              <h3>Puntos de reciclaje para este material</h3>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">1</span>Acopio Papelito</h4><span class="distancia">1.8 km</span></div>
+                <p>Calle Los Pinos 88</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 1 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Limpios, secos, aplanados y sin grapas.</p></details>
+              </div>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">2</span>Recicla Lima</h4><span class="distancia">4.1 km</span></div>
+                <p>Av. Primavera 456</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 2 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Limpios, secos, aplanados y sin grapas.</p></details>
+              </div>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">3</span>EcoCentro</h4><span class="distancia">5.6 km</span></div>
+                <p>Av. Principal 789</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 3 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Limpios, secos, aplanados y sin grapas.</p></details>
+              </div>
+            </div>
+            <div class="mapa" role="img" aria-label="Mapa referencial con los tres puntos de reciclaje">
+              <span class="pin p1">1</span><span class="pin p2">2</span><span class="pin p3">3</span>
+              <p>Mapa de puntos de reciclaje<br><small>Vista referencial: puntos y distancias ficticios.</small></p>
+            </div>
+          </div>
+          <p class="acciones-resultado"><a href="#buscar">Buscar otro material</a> · <a href="#categorias">Ver categorías</a></p>
+        </article>
+        <article id="m-lata-gaseosa" class="resultado" aria-labelledby="t-lata-gaseosa">
+          <div class="resumen-material">
+            <svg class="icono" viewBox="0 0 48 48" aria-hidden="true"><ellipse cx="24" cy="9" rx="12" ry="4"/><path d="M12 9v30c0 2.2 5.4 4 12 4s12-1.8 12-4V9"/><path d="M12 18c0 2.2 5.4 4 12 4s12-1.8 12-4"/></svg>
+            <h3 id="t-lata-gaseosa">Lata de gaseosa</h3>
+            <p class="codigo">#41 ALU · Metales</p>
+            <p>Lata de aluminio de bebidas. Vacíala y aplástala.</p>
+          </div>
+          <div class="resultado-cuerpo">
+            <div>
+              <h3>Puntos de reciclaje para este material</h3>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">1</span>Punto Verde Surco</h4><span class="distancia">2.3 km</span></div>
+                <p>Av. Caminos del Inca 1234</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 1 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Vacíos y enjuagados; cuidado con los bordes.</p></details>
+              </div>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">2</span>Recicla Lima</h4><span class="distancia">4.1 km</span></div>
+                <p>Av. Primavera 456</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 2 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Vacíos y enjuagados; cuidado con los bordes.</p></details>
+              </div>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">3</span>Chatarra Limpia</h4><span class="distancia">6.2 km</span></div>
+                <p>Av. Industrial 1500</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 3 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Vacíos y enjuagados; cuidado con los bordes.</p></details>
+              </div>
+            </div>
+            <div class="mapa" role="img" aria-label="Mapa referencial con los tres puntos de reciclaje">
+              <span class="pin p1">1</span><span class="pin p2">2</span><span class="pin p3">3</span>
+              <p>Mapa de puntos de reciclaje<br><small>Vista referencial: puntos y distancias ficticios.</small></p>
+            </div>
+          </div>
+          <p class="acciones-resultado"><a href="#buscar">Buscar otro material</a> · <a href="#categorias">Ver categorías</a></p>
+        </article>
+        <article id="m-lata-atun" class="resultado" aria-labelledby="t-lata-atun">
+          <div class="resumen-material">
+            <svg class="icono" viewBox="0 0 48 48" aria-hidden="true"><ellipse cx="24" cy="9" rx="12" ry="4"/><path d="M12 9v30c0 2.2 5.4 4 12 4s12-1.8 12-4V9"/><path d="M12 18c0 2.2 5.4 4 12 4s12-1.8 12-4"/></svg>
+            <h3 id="t-lata-atun">Lata de atún</h3>
+            <p class="codigo">#40 FE · Metales</p>
+            <p>Lata de acero de conservas. Enjuágala con cuidado por los bordes.</p>
+          </div>
+          <div class="resultado-cuerpo">
+            <div>
+              <h3>Puntos de reciclaje para este material</h3>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">1</span>Punto Verde Surco</h4><span class="distancia">2.3 km</span></div>
+                <p>Av. Caminos del Inca 1234</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 1 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Vacíos y enjuagados; cuidado con los bordes.</p></details>
+              </div>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">2</span>Recicla Lima</h4><span class="distancia">4.1 km</span></div>
+                <p>Av. Primavera 456</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 2 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Vacíos y enjuagados; cuidado con los bordes.</p></details>
+              </div>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">3</span>Chatarra Limpia</h4><span class="distancia">6.2 km</span></div>
+                <p>Av. Industrial 1500</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 3 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Vacíos y enjuagados; cuidado con los bordes.</p></details>
+              </div>
+            </div>
+            <div class="mapa" role="img" aria-label="Mapa referencial con los tres puntos de reciclaje">
+              <span class="pin p1">1</span><span class="pin p2">2</span><span class="pin p3">3</span>
+              <p>Mapa de puntos de reciclaje<br><small>Vista referencial: puntos y distancias ficticios.</small></p>
+            </div>
+          </div>
+          <p class="acciones-resultado"><a href="#buscar">Buscar otro material</a> · <a href="#categorias">Ver categorías</a></p>
+        </article>
+        <article id="m-papel-aluminio" class="resultado" aria-labelledby="t-papel-aluminio">
+          <div class="resumen-material">
+            <svg class="icono" viewBox="0 0 48 48" aria-hidden="true"><ellipse cx="24" cy="9" rx="12" ry="4"/><path d="M12 9v30c0 2.2 5.4 4 12 4s12-1.8 12-4V9"/><path d="M12 18c0 2.2 5.4 4 12 4s12-1.8 12-4"/></svg>
+            <h3 id="t-papel-aluminio">Papel aluminio</h3>
+            <p class="codigo">#41 ALU · Metales</p>
+            <p>Lámina de aluminio limpia. Haz una bola grande para que no se pierda.</p>
+          </div>
+          <div class="resultado-cuerpo">
+            <div>
+              <h3>Puntos de reciclaje para este material</h3>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">1</span>Punto Verde Surco</h4><span class="distancia">2.3 km</span></div>
+                <p>Av. Caminos del Inca 1234</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 1 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Vacíos y enjuagados; cuidado con los bordes.</p></details>
+              </div>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">2</span>Recicla Lima</h4><span class="distancia">4.1 km</span></div>
+                <p>Av. Primavera 456</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 2 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Vacíos y enjuagados; cuidado con los bordes.</p></details>
+              </div>
+              <div class="punto">
+                <div class="punto-cabecera"><h4><span class="num">3</span>Chatarra Limpia</h4><span class="distancia">6.2 km</span></div>
+                <p>Av. Industrial 1500</p>
+                <details class="ubicacion"><summary>Ver ubicación</summary><p>Punto 3 del mapa. Horario de ejemplo: lunes a sábado, de 9:00 a 17:00. Vacíos y enjuagados; cuidado con los bordes.</p></details>
+              </div>
+            </div>
+            <div class="mapa" role="img" aria-label="Mapa referencial con los tres puntos de reciclaje">
+              <span class="pin p1">1</span><span class="pin p2">2</span><span class="pin p3">3</span>
+              <p>Mapa de puntos de reciclaje<br><small>Vista referencial: puntos y distancias ficticios.</small></p>
+            </div>
+          </div>
+          <p class="acciones-resultado"><a href="#buscar">Buscar otro material</a> · <a href="#categorias">Ver categorías</a></p>
+        </article>
+      </div>
+      <p class="nota centrado">Simulación: el catálogo, los puntos y las distancias son ficticios. No se usa tu ubicación ni se guardan búsquedas.</p>
+    </div>
+  </section>
+
+  <!-- HU-01 (ruta alternativa del user flow) · EXPLORAR POR TIPO DE RESIDUO
+       Las tarjetas son label de radios: al elegir una, :checked muestra su panel. CA-03 -->
+  <section id="categorias" tabindex="-1" class="seccion contenedor" aria-labelledby="titulo-categorias">
+    <h2 id="titulo-categorias" class="titulo-subrayado">Explora por tipo de residuo</h2>
+    <div class="categorias">
+      <input type="radio" name="categoria" id="cat-plasticos" class="visualmente-oculto">
+      <input type="radio" name="categoria" id="cat-vidrio" class="visualmente-oculto">
+      <input type="radio" name="categoria" id="cat-papel" class="visualmente-oculto">
+      <input type="radio" name="categoria" id="cat-metales" class="visualmente-oculto">
+      <div class="tarjetas-categoria">
+        <label for="cat-plasticos" class="tarjeta-categoria"><svg class="icono" viewBox="0 0 48 48" aria-hidden="true"><path d="M20 4h8v5l4 7v25a3 3 0 0 1-3 3H19a3 3 0 0 1-3-3V16l4-7z"/><path d="M16 24h16M16 34h16"/></svg><strong>Plásticos</strong><span>16 materiales</span></label>
+        <label for="cat-vidrio" class="tarjeta-categoria"><svg class="icono" viewBox="0 0 48 48" aria-hidden="true"><rect x="14" y="5" width="20" height="7" rx="2"/><path d="M15 12h18v4c3 2 4 5 4 8v17a3 3 0 0 1-3 3H14a3 3 0 0 1-3-3V24c0-3 1-6 4-8z"/></svg><strong>Vidrio</strong><span>4 materiales</span></label>
+        <label for="cat-papel" class="tarjeta-categoria"><svg class="icono" viewBox="0 0 48 48" aria-hidden="true"><path d="M6 16l18-8 18 8v20l-18 8-18-8z"/><path d="M6 16l18 8 18-8M24 24v20"/></svg><strong>Papel y cartón</strong><span>4 materiales</span></label>
+        <label for="cat-metales" class="tarjeta-categoria"><svg class="icono" viewBox="0 0 48 48" aria-hidden="true"><ellipse cx="24" cy="9" rx="12" ry="4"/><path d="M12 9v30c0 2.2 5.4 4 12 4s12-1.8 12-4V9"/><path d="M12 18c0 2.2 5.4 4 12 4s12-1.8 12-4"/></svg><strong>Metales</strong><span>3 materiales</span></label>
+      </div>
+      <p class="categoria-vacia nota centrado">Elige un tipo de residuo para ver sus materiales.</p>
+      <div class="panel-categoria plasticos">
+        <h3>Plásticos <span class="nota">· 16 materiales · Vacíos, enjuagados y aplastados.</span></h3>
+        <!-- CA-03: categoría con más de 15 materiales → filtro que reduce la lista sin recargar. -->
+        <fieldset class="filtro">
+          <legend>Filtrar por código de resina</legend>
+          <input type="radio" name="filtro-plastico" id="fp-todos" checked><label for="fp-todos">Todos</label>
+          <input type="radio" name="filtro-plastico" id="fp-1"><label for="fp-1">#1 PET</label>
+          <input type="radio" name="filtro-plastico" id="fp-2"><label for="fp-2">#2 HDPE</label>
+          <input type="radio" name="filtro-plastico" id="fp-3"><label for="fp-3">#3 PVC</label>
+          <input type="radio" name="filtro-plastico" id="fp-4"><label for="fp-4">#4 LDPE</label>
+          <input type="radio" name="filtro-plastico" id="fp-5"><label for="fp-5">#5 PP</label>
+          <input type="radio" name="filtro-plastico" id="fp-6"><label for="fp-6">#6 PS</label>
+          <input type="radio" name="filtro-plastico" id="fp-7"><label for="fp-7">#7 Otros</label>
+          <ul class="lista-materiales">
+            <li class="r1"><a href="#m-botella-agua">Botella de agua <span class="codigo">(#1 PET Bottles)</span></a></li>
+            <li class="r1"><a href="#m-botella-aceite">Botella de aceite <span class="codigo">(#1 PET Bottles)</span></a></li>
+            <li class="r1"><a href="#m-botella-bebida">Botella de bebida <span class="codigo">(#1 PET Bottles)</span></a></li>
+            <li class="r1"><a href="#m-envase-fruta">Envase transparente de fruta <span class="codigo">(#1 PET)</span></a></li>
+            <li class="r2"><a href="#m-botella-detergente">Botella de detergente <span class="codigo">(#2 HDPE)</span></a></li>
+            <li class="r2"><a href="#m-botella-shampoo">Botella de shampoo <span class="codigo">(#2 HDPE)</span></a></li>
+            <li class="r3"><a href="#m-tuberia-pvc">Tubería de PVC <span class="codigo">(#3 PVC)</span></a></li>
+            <li class="r4"><a href="#m-bolsa-plastico">Bolsa de plástico <span class="codigo">(#4 LDPE)</span></a></li>
+            <li class="r4"><a href="#m-film-embalaje">Film de embalaje <span class="codigo">(#4 LDPE)</span></a></li>
+            <li class="r5"><a href="#m-tapa-botella">Tapa de botella <span class="codigo">(#5 PP)</span></a></li>
+            <li class="r5"><a href="#m-taper-comida">Táper de comida <span class="codigo">(#5 PP)</span></a></li>
+            <li class="r5"><a href="#m-envase-yogurt">Envase de yogurt <span class="codigo">(#5 PP)</span></a></li>
+            <li class="r6"><a href="#m-vaso-descartable">Vaso descartable <span class="codigo">(#6 PS)</span></a></li>
+            <li class="r6"><a href="#m-bandeja-tecnopor">Bandeja de tecnopor <span class="codigo">(#6 PS)</span></a></li>
+            <li class="r6"><a href="#m-cubiertos-descartables">Cubiertos descartables <span class="codigo">(#6 PS)</span></a></li>
+            <li class="r7"><a href="#m-envoltura-snack">Envoltura de snacks <span class="codigo">(#7 OTHER)</span></a></li>
+          </ul>
+        </fieldset>
+      </div>
+      <div class="panel-categoria vidrio">
+        <h3>Vidrio <span class="nota">· 4 materiales · Sin tapa y sin mezclar con vidrio de ventanas o espejos.</span></h3>
+        <ul class="lista-materiales">
+          <li><a href="#m-botella-vidrio">Botella de vidrio <span class="codigo">(#70 Glass)</span></a></li>
+          <li><a href="#m-frasco-mermelada">Frasco de mermelada <span class="codigo">(#70 Glass)</span></a></li>
+          <li><a href="#m-botella-vino">Botella de vino <span class="codigo">(#71 Glass)</span></a></li>
+          <li><a href="#m-botella-cerveza">Botella de cerveza <span class="codigo">(#72 Glass)</span></a></li>
+        </ul>
+      </div>
+      <div class="panel-categoria papel">
+        <h3>Papel y cartón <span class="nota">· 4 materiales · Limpios, secos, aplanados y sin grapas.</span></h3>
+        <ul class="lista-materiales">
+          <li><a href="#m-caja-carton">Caja de cartón <span class="codigo">(#20 PAP)</span></a></li>
+          <li><a href="#m-caja-cereal">Caja de cereal <span class="codigo">(#21 PAP)</span></a></li>
+          <li><a href="#m-periodico-hojas">Periódico y hojas <span class="codigo">(#22 PAP)</span></a></li>
+          <li><a href="#m-caja-leche">Envase de leche tipo caja <span class="codigo">(#84 C/PAP)</span></a></li>
+        </ul>
+      </div>
+      <div class="panel-categoria metales">
+        <h3>Metales <span class="nota">· 3 materiales · Vacíos y enjuagados; cuidado con los bordes.</span></h3>
+        <ul class="lista-materiales">
+          <li><a href="#m-lata-gaseosa">Lata de gaseosa <span class="codigo">(#41 ALU)</span></a></li>
+          <li><a href="#m-lata-atun">Lata de atún <span class="codigo">(#40 FE)</span></a></li>
+          <li><a href="#m-papel-aluminio">Papel aluminio <span class="codigo">(#41 ALU)</span></a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- SECCIÓN: QUIÉNES SOMOS -->
+  <section id="nosotros" tabindex="-1" class="seccion fondo">
+    <div class="contenedor dos-columnas">
+      <img class="logo-grande" src="imagenes/logo.png" alt="Logotipo de CicloVerde: una hoja dentro de dos flechas que forman un ciclo" width="600" height="600" loading="lazy">
+      <div>
+        <p class="etiqueta">Quiénes somos</p>
+        <h2>Una organización que cierra el ciclo.</h2>
+        <p>Somos una organización que promueve hábitos de producción y consumo responsables, vinculada con el Objetivo de Desarrollo Sostenible 12.</p>
+        <h3>Nuestra misión</h3>
+        <p>Promover hábitos de producción y consumo responsables en hogares, escuelas y empresas.</p>
+        <h3>Nuestra visión</h3>
+        <p>Ser referentes en el Perú en reducir, reutilizar y reciclar.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECCIÓN: SERVICIOS. Tres tarjetas en escritorio, dos en tablet y una en celular. -->
+  <section id="servicios" tabindex="-1" class="seccion contenedor">
+    <p class="etiqueta">Servicios</p>
+    <h2>Acompañamos a personas, escuelas y empresas.</h2>
+    <div class="tarjetas">
+      <article class="tarjeta">
+        <span class="numero">01 / Reducir</span>
+        <h3>Talleres de consumo consciente</h3>
+        <p>Enseñamos a reducir residuos y comprar solo lo necesario.</p>
+        <a href="#taller">Inscribirme a un taller</a>
+      </article>
+      <article class="tarjeta">
+        <span class="numero">02 / Producir mejor</span>
+        <h3>Asesoría a empresas</h3>
+        <p>Ayudamos a las empresas a producir con menos desperdicio.</p>
+        <a href="#contacto">Escríbenos</a>
+      </article>
+      <article class="tarjeta">
+        <span class="numero">03 / Reciclar</span>
+        <h3>Puntos de acopio</h3>
+        <p>Recibimos papel, plástico y residuos orgánicos para reciclarlos.</p>
+        <a href="#buscar">Buscar dónde reciclar</a>
+      </article>
+    </div>
+  </section>
+
+  <!-- ANTES DE COMPRAR (casillas, contador CSS y resultado con :checked) -->
+  <section id="antes-de-comprar" tabindex="-1" class="seccion contenedor">
+    <p class="etiqueta">Antes de comprar</p>
+    <h2>¿De verdad necesitas comprarlo?</h2>
+    <p>Piensa en algo que quieras comprar y marca solo las frases que sean ciertas.</p>
+    <!-- Las casillas y .veredictos tienen el mismo padre para que funcione el selector ~. -->
+    <fieldset class="checklist">
+      <legend>Mi lista antes de comprar</legend>
+      <input type="checkbox" id="c1"><label for="c1">Lo necesito de verdad y no tengo otro objeto que cumpla la misma función.</label>
+      <input type="checkbox" id="c2"><label for="c2">No puedo repararlo, pedirlo prestado ni alquilarlo.</label>
+      <input type="checkbox" id="c3"><label for="c3">No lo encontré en la feria de trueque ni de segunda mano.</label>
+      <div class="veredictos" aria-live="polite">
+        <p class="contador">Frases marcadas: </p>
+        <div class="veredicto pendiente">
+          <h3>Todavía puedes evitar esta compra</h3>
+          <p>Revisa las frases sin marcar: reparar, pedir prestado o intercambiar alarga la vida de las cosas y evita residuos.</p>
+          <a href="#proyectos">Conocer la feria de trueque</a>
+        </div>
+        <div class="veredicto listo">
+          <h3>Compra con criterio</h3>
+          <p>Si de verdad lo necesitas, elige un producto duradero, que se pueda reparar y con menos empaque. Guarda el comprobante y la garantía.</p>
+        </div>
+      </div>
+    </fieldset>
+    <p class="nota">Es una guía de reflexión: no evalúa productos ni guarda tus respuestas.</p>
+  </section>
+
+  <!-- SECCIÓN: PROYECTOS -->
+  <!-- SEMANA 11 · HU-06 · CALCULADORA "MI CONSUMO DE DESCARTABLES"
+       HTML: formulario y caja de resultado. CSS: diseño, barras y estados de error.
+       JS (js/calculadora.js): valida los campos, calcula y escribe el resultado. -->
+  <section id="calculadora" tabindex="-1" class="seccion contenedor" aria-labelledby="titulo-calculadora">
+    <p class="etiqueta">Mi consumo de descartables</p>
+    <h2 id="titulo-calculadora">¿Cuántos descartables usas en un año?</h2>
+    <p>Escribe cuántos usas en una semana normal. Te mostramos el total del año y cuál te conviene reducir primero.</p>
+    <div class="calculadora">
+      <!-- novalidate: los mensajes de error los muestra el JS, no el navegador. -->
+      <form id="form-calculadora" class="formulario" novalidate>
+        <fieldset class="campos-calculadora">
+          <legend>Mi semana</legend>
+          <div class="campo-numero">
+            <label for="cant-bolsas">Bolsas plásticas</label>
+            <input id="cant-bolsas" type="number" min="0" max="999" step="1" inputmode="numeric" placeholder="Ej.: 5" data-tipo="bolsas" aria-describedby="error-bolsas">
+            <p id="error-bolsas" class="mensaje-error" hidden></p>
+          </div>
+          <div class="campo-numero">
+            <label for="cant-botellas">Botellas descartables</label>
+            <input id="cant-botellas" type="number" min="0" max="999" step="1" inputmode="numeric" placeholder="Ej.: 3" data-tipo="botellas" aria-describedby="error-botellas">
+            <p id="error-botellas" class="mensaje-error" hidden></p>
+          </div>
+          <div class="campo-numero">
+            <label for="cant-envases">Envases de delivery</label>
+            <input id="cant-envases" type="number" min="0" max="999" step="1" inputmode="numeric" placeholder="Ej.: 2" data-tipo="envases" aria-describedby="error-envases">
+            <p id="error-envases" class="mensaje-error" hidden></p>
+          </div>
+          <div class="campo-numero">
+            <label for="cant-cubiertos">Cubiertos descartables</label>
+            <input id="cant-cubiertos" type="number" min="0" max="999" step="1" inputmode="numeric" placeholder="Ej.: 0" data-tipo="cubiertos" aria-describedby="error-cubiertos">
+            <p id="error-cubiertos" class="mensaje-error" hidden></p>
+          </div>
+        </fieldset>
+        <div class="acciones-calculadora">
+          <button type="submit" class="boton">Calcular</button>
+          <button type="reset" class="boton boton-secundario">Limpiar</button>
+        </div>
+      </form>
+      <!-- aria-live: los lectores de pantalla anuncian el resultado cuando cambia.
+           El JS muestra solo uno de los tres bloques (atributo hidden). -->
+      <div class="resultado-calculadora" aria-live="polite">
+        <p id="resultado-vacio" class="nota">Aquí aparecerá tu resultado.</p>
+        <div id="resultado-datos" hidden>
+          <p class="totales"><strong id="total-semana">0</strong> descartables por semana · <strong id="total-anio">0</strong> al año</p>
+          <ul class="barras">
+            <li id="fila-bolsas"><span class="barra-nombre">Bolsas</span><span class="barra-fondo"><span class="barra-relleno"></span></span><span class="barra-valor"></span></li>
+            <li id="fila-botellas"><span class="barra-nombre">Botellas</span><span class="barra-fondo"><span class="barra-relleno"></span></span><span class="barra-valor"></span></li>
+            <li id="fila-envases"><span class="barra-nombre">Envases</span><span class="barra-fondo"><span class="barra-relleno"></span></span><span class="barra-valor"></span></li>
+            <li id="fila-cubiertos"><span class="barra-nombre">Cubiertos</span><span class="barra-fondo"><span class="barra-relleno"></span></span><span class="barra-valor"></span></li>
+          </ul>
+          <div class="veredicto pendiente">
+            <h3 id="consejo-titulo">Empieza por reducir</h3>
+            <p id="consejo-texto"></p>
+            <a id="consejo-enlace" href="#buscar">Ver dónde reciclar</a>
+          </div>
+        </div>
+        <div id="resultado-cero" class="veredicto felicitacion" hidden>
+          <h3>¡Excelente! No usas descartables</h3>
+          <p>Tu semana no genera residuos de un solo uso. Comparte lo que haces en uno de nuestros talleres.</p>
+          <a href="#taller">Inscribirme a un taller</a>
+        </div>
+      </div>
+    </div>
+    <p class="nota">Es una estimación: multiplica tu semana por 52. La página no guarda tus respuestas.</p>
+  </section>
+  <section id="proyectos" tabindex="-1" class="seccion fondo">
+    <div class="contenedor dos-columnas">
+      <div>
+        <p class="etiqueta">Proyectos</p>
+        <h2>Ideas que reducen y reutilizan residuos.</h2>
+        <div class="pila">
+          <article class="tarjeta">
+            <h3>Huerto comunitario</h3>
+            <p>Cultivamos alimentos con abono hecho de residuos orgánicos.</p>
+          </article>
+          <article class="tarjeta">
+            <h3>Feria de trueque</h3>
+            <p>Intercambiamos y reparamos objetos para alargar su vida útil.</p>
+          </article>
+        </div>
+      </div>
+      <img class="foto" src="imagenes/proyectos.jpg" alt="Ilustración de una persona regando el huerto comunitario de CicloVerde junto a una compostera" width="1200" height="800" loading="lazy">
+    </div>
+  </section>
+
+  <!-- SECCIÓN: GALERÍA. Cuatro imágenes y nuestro video de presentación. -->
+  <section id="galeria" tabindex="-1" class="seccion contenedor">
+    <p class="etiqueta">Galería</p>
+    <h2>Así se ve un día en CicloVerde.</h2>
+    <div class="galeria">
+      <figure><img src="imagenes/galeria1.jpg" alt="Puesto de la feria de trueque y reparación con ropa y frascos" width="1200" height="800" loading="lazy"><figcaption>Feria de trueque y reparación</figcaption></figure>
+      <figure><img src="imagenes/galeria2.jpg" alt="Esquema de una compostera doméstica con capas de restos verdes, hojas secas y abono" width="1200" height="800" loading="lazy"><figcaption>Del residuo al abono</figcaption></figure>
+      <figure><img src="imagenes/galeria3.jpg" alt="Cocina con frascos reutilizables, bolsa de tela y alimentos aprovechados" width="1200" height="800" loading="lazy"><figcaption>Cocina sin desperdicio</figcaption></figure>
+      <figure><img src="imagenes/servicios.jpg" alt="Resumen de servicios: talleres, asesoría a empresas y puntos de acopio" width="1200" height="800" loading="lazy"><figcaption>Nuestros servicios</figcaption></figure>
+    </div>
+    <h3>Nuestro video de presentación</h3>
+    <video class="video-local" src="videos/presentacion.mp4" controls preload="metadata" width="1280" height="720">
+      Tu navegador no puede reproducir este video.
+    </video>
+  </section>
+
+  <!-- SECCIÓN: TESTIMONIOS -->
+  <section id="testimonios" class="seccion fondo">
+    <div class="contenedor">
+      <p class="etiqueta">Testimonios</p>
+      <blockquote>
+        <p>“Gracias a los talleres ahora en casa generamos menos basura”.</p>
+        <footer>Albert</footer>
+      </blockquote>
+      <blockquote>
+        <p>“En la feria cambié ropa que no usaba por libros para mis hijos”.</p>
+        <footer>José</footer>
+      </blockquote>
+      <p class="nota">Relatos ficticios que representan la necesidad de nuestros usuarios.</p>
+    </div>
+  </section>
+
+  <!-- INSCRIBIRME A UN TALLER (formulario con validación HTML → confirmacion.html) -->
+  <section id="taller" tabindex="-1" class="seccion">
+    <div class="contenedor dos-columnas">
+      <div>
+        <p class="etiqueta">Talleres</p>
+        <h2>Aprende a generar menos residuos en casa.</h2>
+        <p>Elige un taller y un turno. Completa datos ficticios para probar el recorrido. En un servicio real, recibirías un correo con la fecha, el lugar y los materiales.</p>
+        <p class="nota">Esta práctica no guarda datos ni registra inscripciones. No ingreses información personal real.</p>
+      </div>
+      <!-- required valida los campos. Sin name: los datos no se añaden a la URL. -->
+      <form action="confirmacion.html" method="get" class="formulario">
+        <label for="nombre">Nombre de prueba</label>
+        <input id="nombre" type="text" required maxlength="60" placeholder="Ejemplo: Ana" autocomplete="off">
+        <label for="correo">Correo de prueba</label>
+        <input id="correo" type="email" required placeholder="ana@example.com" autocomplete="off">
+        <label for="tipo-taller">Taller</label>
+        <select id="tipo-taller" required>
+          <option value="">Selecciona un taller</option>
+          <option>Cocina sin desperdicio</option>
+          <option>Compostaje en casa</option>
+          <option>Reparar antes de reemplazar</option>
+        </select>
+        <label for="turno">Turno</label>
+        <select id="turno" required>
+          <option value="">Selecciona un turno</option>
+          <option>Sábado por la mañana (presencial)</option>
+          <option>Sábado por la tarde (presencial)</option>
+          <option>Miércoles por la noche (virtual)</option>
+        </select>
+        <label for="meta">¿Qué te gustaría reducir en casa?</label>
+        <textarea id="meta" required minlength="8" maxlength="240" rows="3" placeholder="Ejemplo: las bolsas plásticas"></textarea>
+        <div><input id="acepto" type="checkbox" required> <label for="acepto">Entiendo que es una simulación.</label></div>
+        <button type="submit" class="boton">Inscribirme</button>
+      </form>
+    </div>
+  </section>
+</main>
+
+<!-- PIE DE PÁGINA compartido por las páginas del sitio. -->
+<footer id="contacto" class="pie">
+  <div class="contenedor">
+    <p><strong>CicloVerde</strong> · Consume menos, vive mejor</p>
+    <p>Correo: <a href="mailto:contacto@cicloverde.org">contacto@cicloverde.org</a> · Teléfono: 987 654 321</p>
+    <nav class="redes" aria-label="Redes sociales">
+      <!-- Son páginas generales de las redes; reemplazar por las cuentas del proyecto. -->
+      <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer"><img src="iconos/facebook.svg" alt="" width="24" height="24">Facebook</a>
+      <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer"><img src="iconos/instagram.svg" alt="" width="24" height="24">Instagram</a>
+      <a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer"><img src="iconos/youtube.svg" alt="" width="24" height="24">YouTube</a>
+    </nav>
+    <p>© 2026 CicloVerde · Proyecto académico · <a href="FUENTES.txt">Créditos de recursos</a></p>
+  </div>
+</footer>
+</body>
+</html>

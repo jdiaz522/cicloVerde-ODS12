@@ -1,0 +1,40 @@
+CicloVerde - Consume menos, vive mejor
+Proyecto académico vinculado con el ODS 12: Producción y consumo responsables.
+UPC - HCI for UX Design - 2026 - Semana 10.
+
+Las acciones de la web son simulaciones hechas con HTML y CSS. Desde la semana 11, el menú
+responsive usa JavaScript (js/menu.js), adaptado del ejemplo ACME del docente.
+HU-01 Recicla Fácil: el catálogo de materiales, los puntos de reciclaje, direcciones y distancias
+son ficticios (tomados de los wireframes de Figma). No se usa la ubicación del usuario.
+Las sugerencias no se filtran letra por letra: aparecen cuando el texto contiene una palabra
+conocida (atributo pattern). El filtro de Plásticos es por código de resina.
+Códigos usados: resinas plásticas #1 a #7 y códigos de reciclaje de vidrio (70-72),
+papel y cartón (20-22), metales (40 FE, 41 ALU) y envases compuestos (84 C/PAP).
+No hay base de datos, envío de correos ni registro de inscripciones.
+Los horarios y testimonios son ficticios.
+La línea 1-800-CLEANUP figura en la HU-01 tal como fue redactada por el equipo.
+
+IMÁGENES Y VIDEO LOCALES (carpetas imagenes/ y videos/)
+logo.png, nosotros.jpg, servicios.jpg, proyectos.jpg, galeria1.jpg, galeria2.jpg,
+galeria3.jpg y presentacion.mp4: material del proyecto CicloVerde de la actividad anterior.
+[COMPLETAR: indicar quién las elaboró o de dónde provienen.]
+
+VIDEO INSERTADO (recursos.html)
+"ODS 12 Producción y consumo responsables: ¿Qué puedo hacer?"
+Plataforma de ONG de Acción Social (2021), YouTube.
+https://www.youtube.com/watch?v=V-3acAwVcM4
+El video se inserta desde YouTube con iframe; no se descarga ni se redistribuye.
+
+INFORMACIÓN DEL ODS 12
+Naciones Unidas - Objetivo 12: Garantizar modalidades de consumo y producción sostenibles.
+https://www.un.org/sustainabledevelopment/es/sustainable-consumption-production/
+
+ICONOS
+Facebook, Instagram y YouTube: Simple Icons v15 (CDN jsDelivr), incluidos en la carpeta
+de ejemplo del curso. https://github.com/simple-icons/simple-icons/blob/develop/LICENSE.md
+Las marcas pertenecen a sus titulares; no implican afiliación.
+Los enlaces de redes llevan a páginas generales; reemplazar por las cuentas del proyecto.
+favicon.svg: icono original de CicloVerde basado en el logotipo del proyecto.
+
+BASE
+Estructura y técnicas adaptadas del ejemplo resuelto ACME entregado por el docente.

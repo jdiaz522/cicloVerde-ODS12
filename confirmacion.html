@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <!-- PASO 1: permite que el navegador use el ancho real del celular. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inscripción de prueba | CicloVerde - ODS 12</title>
+  <meta name="description" content="Confirmación simulada de la inscripción a un taller de CicloVerde.">
+  <!-- PASO 2: conectar este HTML con el archivo CSS compartido. -->
+  <link rel="stylesheet" href="css/estilos.css">
+  <!-- SEMANA 11: menú responsive con JavaScript. defer espera a que el HTML esté listo. -->
+  <script src="js/menu.js" defer></script>
+  <!-- Este icono aparece en la pestaña del navegador. -->
+  <link rel="icon" type="image/svg+xml" href="iconos/favicon.svg">
+</head>
+<body>
+<a class="saltar" href="#contenido">Saltar al contenido</a>
+<!-- PASO 3: ENCABEZADO. Permanece visible con position: sticky en CSS. -->
+<header class="cabecera">
+  <div class="contenedor barra">
+    <a class="marca" href="index.html"><img src="iconos/favicon.svg" alt="" width="42" height="42"><span class="nombre"><span class="ciclo">Ciclo</span>Verde</span></a>
+    <!-- SEMANA 11 (menú ACME): botón hamburguesa. Solo se ve en 600 px o menos.
+         aria-controls lo une con la navegación; aria-expanded indica si está abierta. -->
+    <button id="boton-menu" class="hamburguesa" type="button"
+            aria-controls="navegacion" aria-expanded="false" aria-label="Abrir menú">
+      <span class="lineas" aria-hidden="true"><span></span><span></span><span></span></span>
+      <span id="texto-menu">Menú</span>
+    </button>
+    <!-- PASO 4: MENÚ HORIZONTAL. La lista se ordena en fila con Flexbox.
+         En celular, JS le agrega o quita el atributo hidden para mostrarla u ocultarla. -->
+    <nav id="navegacion" class="navegacion" aria-label="Navegación principal">
+      <ul class="menu">
+        <li><a href="index.html#inicio">Inicio</a></li>
+        <li><a href="index.html#nosotros">Nosotros</a></li>
+        <li>
+          <!-- MENÚ DESPLEGABLE VERTICAL: details se abre con clic, Enter o toque.
+               JS solo lo cierra (Escape o al cerrar el menú); por eso tiene id. -->
+          <details id="actuar" class="desplegable">
+            <summary>Actuar</summary>
+            <ul class="submenu">
+              <li><a href="index.html#buscar">Buscar material</a></li>
+              <li><a href="index.html#categorias">Explorar categorías</a></li>
+              <li><a href="index.html#servicios">Nuestros servicios</a></li>
+              <li><a href="index.html#antes-de-comprar">Antes de comprar</a></li>
+              <li><a href="index.html#calculadora">Calcular mis descartables</a></li>
+              <li><a href="index.html#taller">Inscribirme a un taller</a></li>
+            </ul>
+          </details>
+        </li>
+        <li><a href="index.html#proyectos">Proyectos</a></li>
+        <li><a href="index.html#galeria">Galería</a></li>
+        <li><a href="recursos.html">Video y guía</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="contenido" class="contenedor seccion">
+  <!-- CONFIRMACIÓN FIJA: representa el final del recorrido de la HU03. No procesa datos. -->
+  <section class="confirmacion" aria-labelledby="confirmado">
+    <img class="icono-ok" src="iconos/favicon.svg" alt="" width="72" height="72">
+    <p class="etiqueta">Final de la demostración</p>
+    <h1 id="confirmado">¡Listo! Así se vería tu inscripción.</h1>
+    <p>En un servicio real, CicloVerde te enviaría un correo con la fecha, el lugar y los materiales que debes llevar al taller.</p>
+    <p><strong>Este es un mensaje fijo de prueba.</strong> No se guardó tu información, no se envió ningún correo y no se reservó ninguna vacante.</p>
+    <h2>Mientras tanto, prueba otra acción</h2>
+    <p>Vuelve a la página principal para buscar dónde reciclar un material o revisar tu lista antes de comprar.</p>
+    <a class="boton" href="index.html#buscar">Buscar un material</a>
+    <a class="enlace" href="index.html#antes-de-comprar">Antes de comprar</a>
+    <a class="enlace" href="index.html#taller">Volver al formulario</a>
+  </section>
+</main>
+<!-- PIE DE PÁGINA compartido por las páginas del sitio. -->
+<footer id="contacto" class="pie">
+  <div class="contenedor">
+    <p><strong>CicloVerde</strong> · Consume menos, vive mejor</p>
+    <p>Correo: <a href="mailto:contacto@cicloverde.org">contacto@cicloverde.org</a> · Teléfono: 987 654 321</p>
+    <nav class="redes" aria-label="Redes sociales">
+      <!-- Son páginas generales de las redes; reemplazar por las cuentas del proyecto. -->
+      <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer"><img src="iconos/facebook.svg" alt="" width="24" height="24">Facebook</a>
+      <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer"><img src="iconos/instagram.svg" alt="" width="24" height="24">Instagram</a>
+      <a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer"><img src="iconos/youtube.svg" alt="" width="24" height="24">YouTube</a>
+    </nav>
+    <p>© 2026 CicloVerde · Proyecto académico · <a href="FUENTES.txt">Créditos de recursos</a></p>
+  </div>
+</footer>
+</body>
+</html>
