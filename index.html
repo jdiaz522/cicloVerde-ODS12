@@ -12,6 +12,8 @@
   <script src="js/menu.js" defer></script>
   <!-- SEMANA 11 · HU-06: calculadora de descartables (solo en esta página). -->
   <script src="js/calculadora.js" defer></script>
+  <!-- SEMANA 14 · HU-01: buscador dinámico (filtra, corrige errores, atajos / y Esc). -->
+  <script src="js/buscador.js" defer></script>
   <!-- Este icono aparece en la pestaña del navegador. -->
   <link rel="icon" type="image/svg+xml" href="iconos/favicon.svg">
 </head>
@@ -90,19 +92,27 @@
       <h2 id="titulo-buscar" class="titulo-grande">Encuentra dónde reciclar</h2>
       <p class="subtitulo">Busca tu material usando palabras cotidianas.</p>
 
-      <div class="busqueda">
+      <!-- SEMANA 14 · Buscador dinámico (js/buscador.js).
+           El JS filtra los 27 materiales, cuenta coincidencias, tolera errores
+           y arma las sugerencias. Las fichas #m-... de abajo NO cambian. -->
+      <div class="busqueda" id="busqueda">
         <div class="campo">
           <svg class="lupa" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg>
           <label for="buscador" class="visualmente-oculto">¿Qué quieres reciclar?</label>
-          <!-- pattern: el texto debe contener una palabra conocida (botella, lata, caja...).
-               Las letras van entre corchetes para aceptar mayúsculas y tildes. -->
+          <!-- Ya no usamos pattern: el JS decide si hay coincidencias o una corrección. -->
           <input id="buscador" type="search" placeholder="¿Qué quieres reciclar?" autocomplete="off" spellcheck="false"
-            aria-describedby="ayuda-buscar"
-            pattern=".*([bB][oOóÓ][tT]|[bB][oOóÓ][lL]|[lL][aAáÁ][tT]|[eEéÉ][nN][vV]|[eEéÉ][mM][bB]|[yY][oOóÓ][gG]|[vV][iIíÍ][dD]|[fF][rR][aAáÁ]|[cC][aAáÁ][jJ]|[cC][aAáÁ][rR]|[pP][aAáÁ][pP]|[pP][eEéÉ][rR]|[hH][oOóÓ][jJ]|[tT][aAáÁ][pP]|[pP][eEéÉ][tT]|[pP][vV][cC]|[tT][uUúÚüÜ][bB]|[aAáÁ][lL][uUúÚüÜ]|[tT][eEéÉ][tT]|[lL][eEéÉ][cC]|[pP][lL][aAáÁ]|[mM][eEéÉ][tT]|[aAáÁ][cC][eEéÉ]|[bB][eEéÉ][bB]|[aAáÁ][gG][uUúÚüÜ]|[gG][aAáÁ][sS]|[dD][eEéÉ][tT]|[sS][hH][aAáÁ]|[fF][iIíÍ][lL]|[vV][aAáÁ][sS]|[tT][eEéÉ][cC]|[bB][aAáÁ][nN]|[cC][uUúÚüÜ][bB]|[sS][nN][aAáÁ]|[cC][eEéÉ][rR]|[vV][iIíÍ][nN]|[mM][eEéÉ][rR]|[aAáÁ][tT][uUúÚüÜ]|[hH][dD][pP]|[lL][dD][pP]|[cC][uUúÚüÜ][cC]|[tT][eEéÉ][nN]).*">
+            aria-describedby="ayuda-buscar" aria-controls="lista-sugerencias">
+          <!-- CONTROL DEL USUARIO: botón × para borrar la búsqueda (el JS lo muestra cuando hay texto). -->
+          <button type="button" id="limpiar-busqueda" class="limpiar-busqueda" aria-label="Limpiar búsqueda" title="Limpiar búsqueda (Esc)" hidden>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+          </button>
         </div>
-        <p id="ayuda-buscar" class="nota centrado">Las sugerencias aparecen desde el tercer carácter.</p>
+        <p id="ayuda-buscar" class="nota centrado">Escribe un nombre común o un código (#5, PP). Atajos: <kbd>/</kbd> para buscar y <kbd>Esc</kbd> para limpiar.</p>
 
-        <!-- Campo vacío: ejemplos (wireframe 1). -->
+        <!-- TRANSPARENCIA: el JS escribe aquí cuántas coincidencias encontró. -->
+        <p id="contador-busqueda" class="contador-busqueda" role="status" aria-live="polite"></p>
+
+        <!-- Campo vacío: ejemplos (wireframe 1). Se siguen mostrando con :placeholder-shown. -->
         <div class="ejemplos">
           <span>Ejemplos:</span>
           <a class="ejemplo" href="#m-botella-agua">Botella de agua</a>
@@ -111,38 +121,28 @@
           <a class="ejemplo" href="#m-bolsa-plastico">Bolsa plástica</a>
         </div>
 
-        <!-- ESCENARIO 1 · Texto con una palabra conocida: sugerencias (wireframe 2). CA-01 y CA-02 -->
-        <div class="sugerencias">
-          <div class="sugerencias-cabecera"><span>Sugerencias activas (mínimo 3 caracteres)</span><span class="insignia">3+ car.</span></div>
-          <ul>
-            <li><a href="#m-botella-agua"><svg class="lupa" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg><span class="texto-sug"><strong>Botella de agua</strong> <span class="codigo">(#1 PET Bottles)</span></span><svg class="flecha" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></a></li>
-            <li><a href="#m-botella-aceite"><svg class="lupa" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg><span class="texto-sug"><strong>Botella de aceite</strong> <span class="codigo">(#1 PET Bottles)</span></span><svg class="flecha" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></a></li>
-            <li><a href="#m-botella-bebida"><svg class="lupa" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg><span class="texto-sug"><strong>Botella de bebida</strong> <span class="codigo">(#1 PET Bottles)</span></span><svg class="flecha" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></a></li>
-            <li><a href="#m-botella-vidrio"><svg class="lupa" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg><span class="texto-sug"><strong>Botella de vidrio</strong> <span class="codigo">(#70 Glass)</span></span><svg class="flecha" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></a></li>
-            <li><a href="#m-bolsa-plastico"><svg class="lupa" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg><span class="texto-sug"><strong>Bolsa de plástico</strong> <span class="codigo">(#4 LDPE)</span></span><svg class="flecha" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></a></li>
-            <li><a href="#m-lata-gaseosa"><svg class="lupa" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg><span class="texto-sug"><strong>Lata de gaseosa</strong> <span class="codigo">(#41 ALU)</span></span><svg class="flecha" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></a></li>
-            <li><a href="#m-envase-yogurt"><svg class="lupa" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg><span class="texto-sug"><strong>Envase de yogurt</strong> <span class="codigo">(#5 PP)</span></span><svg class="flecha" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></a></li>
-            <li><a href="#m-caja-carton"><svg class="lupa" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg><span class="texto-sug"><strong>Caja de cartón</strong> <span class="codigo">(#20 PAP)</span></span><svg class="flecha" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></a></li>
-          </ul>
+        <!-- ESCENARIO 1 · Sugerencias dinámicas (wireframe 2). CA-01 y CA-02.
+             La lista <ul> empieza vacía: el JS crea un <li> por cada material que coincide. -->
+        <div id="panel-sugerencias" class="sugerencias sugerencias-js" hidden>
+          <div class="sugerencias-cabecera"><span id="titulo-sugerencias">Sugerencias</span><span class="insignia">Nombre común · código</span></div>
+          <!-- RECUPERACIÓN ANTE ERRORES: "¿Quisiste decir…?" (el JS lo completa). -->
+          <p id="quisiste-decir" class="quisiste-decir" hidden></p>
+          <ul id="lista-sugerencias" class="lista-sugerencias" aria-label="Materiales sugeridos"></ul>
           <a class="ver-todos" href="#categorias">¿No está tu material? Explora por tipo de residuo</a>
         </div>
 
-        <!-- ESCENARIO 2 · Texto sin palabra conocida. Primero se pide seguir escribiendo;
-             si después de 1 segundo sigue sin coincidir, aparece el mensaje (animation-delay). -->
-        <div class="estado-invalido">
-          <p class="sigue-escribiendo">Sigue escribiendo… las sugerencias aparecen desde el tercer carácter.</p>
-          <div class="sin-coincidencias" role="status">
-            <h3>No encontramos ese material</h3>
-            <p>Quizás buscabas:</p>
-            <ul class="aproximadas">
-              <li><a href="#m-botella-agua">Botella de agua <span class="codigo">(#1 PET Bottles)</span></a></li>
-              <li><a href="#m-lata-gaseosa">Lata de gaseosa <span class="codigo">(#41 ALU)</span></a></li>
-              <li><a href="#m-caja-carton">Caja de cartón <span class="codigo">(#20 PAP)</span></a></li>
-            </ul>
-            <div class="alternativas">
-              <a class="boton" href="#categorias">Explorar categorías por tipo de residuo</a>
-              <a class="boton boton-secundario" href="tel:+18002532687">Llamar a la línea 1-800-CLEANUP</a>
-            </div>
+        <!-- ESCENARIO 2 · Ninguna coincidencia ni parecida. Aparece tras 1 s (animación del CSS). -->
+        <div id="sin-resultados" class="sin-coincidencias" hidden>
+          <h3>No encontramos ese material</h3>
+          <p>Quizás buscabas:</p>
+          <ul class="aproximadas">
+            <li><a href="#m-botella-agua">Botella de agua <span class="codigo">(#1 PET Bottles)</span></a></li>
+            <li><a href="#m-lata-gaseosa">Lata de gaseosa <span class="codigo">(#41 ALU)</span></a></li>
+            <li><a href="#m-caja-carton">Caja de cartón <span class="codigo">(#20 PAP)</span></a></li>
+          </ul>
+          <div class="alternativas">
+            <a class="boton" href="#categorias">Explorar categorías por tipo de residuo</a>
+            <a class="boton boton-secundario" href="tel:+18002532687">Llamar a la línea 1-800-CLEANUP</a>
           </div>
         </div>
       </div>
