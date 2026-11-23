@@ -347,3 +347,62 @@ input.campo-error { border: 2px solid #a3462a; background: #fdf1ec; }
   .logo-grande { max-width: 240px; }
   .hero { background: radial-gradient(circle at 100% 0%, #efe2c4 0 90px, transparent 91px); }
 }
+
+/* =========================================================
+   SEMANA 14 · BUSCADOR DINÁMICO (js/buscador.js)
+   Human-AI Interaction: transparencia, control, recuperación ante errores.
+   Se agrega al final para no tocar los estilos anteriores.
+   ========================================================= */
+
+/* 1. Ahora el JS decide qué se ve con el atributo hidden.
+      !important gana a las reglas antiguas con :has(:valid) del PASO 9. */
+.busqueda [hidden] { display: none !important; }
+
+/* 2. Espacio a la derecha del campo para el botón × y
+      ocultamos la × propia del navegador para no tener dos. */
+#buscador { padding-right: 3.4rem; }
+#buscador::-webkit-search-cancel-button { -webkit-appearance: none; appearance: none; }
+#buscador:focus-visible { outline: 3px solid #c8902a; outline-offset: 2px; }
+
+/* 3. CONTROL DEL USUARIO · botón "Limpiar búsqueda" dentro del campo (44 px de área táctil). */
+.limpiar-busqueda { position: absolute; right: .4rem; top: 50%; transform: translateY(-50%); display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; padding: 0; border: 0; border-radius: 50%; background: transparent; color: #1d4a37; cursor: pointer; }
+.limpiar-busqueda svg { width: 1.2rem; height: 1.2rem; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; }
+.limpiar-busqueda:hover { background: #e7f0e2; }
+.limpiar-busqueda:focus-visible { outline: 3px solid #c8902a; outline-offset: 0; }
+
+/* Teclas de los atajos en la ayuda. */
+.busqueda kbd { display: inline-block; min-width: 1.4em; padding: 0 .35em; border: 1px solid #c9d8c4; border-bottom-width: 2px; border-radius: .3rem; background: #fffdf8; font: inherit; font-size: .85em; text-align: center; }
+
+/* 4. TRANSPARENCIA · contador de coincidencias en tiempo real. */
+.contador-busqueda { margin: .4rem 0 0; min-height: 1.4em; text-align: center; font-size: .95rem; font-weight: bold; color: #1d4a37; }
+.contador-busqueda:empty { display: none; }
+
+/* Estados del borde del campo: mostaza si solo hay parecidos o nada (no rojo: aún escribe). */
+.busqueda-aproximada #buscador, .busqueda-sin-resultados #buscador { border-color: #c8902a; }
+
+/* 5. Sugerencias dinámicas: lista con scroll si hay muchas (ej. "plástico" = 16). */
+.lista-sugerencias { list-style: none; margin: 0; padding: 0; max-height: 22rem; overflow-y: auto; }
+.sugerencias .sugerencia { gap: .8rem; }
+.sugerencia mark { background: #f2e8d5; color: inherit; border-radius: .2rem; padding: 0 .05em; }
+.categoria-sug { display: block; font-size: .8rem; color: #5b6b61; }
+
+/* Ícono SVG según la categoría + insignia con el código de resina. */
+.icono-sug { position: relative; flex: none; display: inline-flex; width: 2.6rem; height: 2.6rem; padding: .35rem; border-radius: .7rem; background: #e7f0e2; }
+.icono-sug svg { width: 100%; height: 100%; fill: none; stroke: #1d4a37; stroke-width: 2.6; stroke-linejoin: round; stroke-linecap: round; }
+.resina { position: absolute; right: -.45rem; bottom: -.35rem; padding: 0 .3rem; border-radius: .4rem; background: #1d4a37; color: #fffdf8; font-size: .68rem; font-weight: bold; line-height: 1.5; }
+.cat-vidrio .icono-sug { background: #e1edf0; }
+.cat-papel .icono-sug { background: #f2e8d5; }
+.cat-metales .icono-sug { background: #e9e6e1; }
+
+/* 6. RECUPERACIÓN ANTE ERRORES · "¿Quisiste decir…?" */
+.quisiste-decir { margin: .5rem .3rem .3rem; padding: .7rem .9rem; border-left: 5px solid #c8902a; border-radius: .5rem; background: #fbf3e4; }
+.quisiste-decir a { font-weight: bold; }
+
+/* 7. Celulares (600 px o menos): textos que se acomodan y lista más baja. */
+@media (max-width: 600px) {
+  .lista-sugerencias { max-height: 60vh; }
+  .sugerencias .sugerencia { padding: .6rem .5rem; }
+  .icono-sug { width: 2.3rem; height: 2.3rem; }
+  .texto-sug { overflow-wrap: anywhere; }
+  .sugerencias-cabecera .insignia { display: none; }
+}
